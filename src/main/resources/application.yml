@@ -1,0 +1,68 @@
+
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  datasource:
+#    url: jdbc:h2:tcp://localhost/~/jpashop
+    url: jdbc:h2:mem:mydb
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 1000
+    show-sql: true
+    generate-ddl: true
+
+token:
+  secret: my-secret-token
+  access-token-expiration-time: 900000  # 15?
+  refresh-token-expiration-time: 1210500000 # 2?
+
+sms:
+  api-key: NCS3MWXO5L4JQZTH
+  api-secret: QFNUNIXRGD13HS0H23I0MKGCL9LVLP2N
+
+kakao:
+  redirect: http://localhost:8080/auth/kakao/callback
+  client:
+    id: d5435649f10d74a354a9f02d17af6bdc
+    secret: F2Yck6vsuPADPS6mxsEFaq2vlAPl6fjV
+
+cloud:
+  aws:
+    s3:
+#      bucket: arn:aws:s3:::yoooooooooon-bucket
+      bucket: ENC(BwxzMdaRgg/FmGsQOenTojVRUhBfjU1vmS3V4vEEV2k=)
+    credentials:
+#      access-key: AKIAXAXE3EAU2LOP25OM
+#      secret-key: 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
+      access-key: ENC(ZmyuYQmZw+8ptwqC+B6sLcaU+M3h0NMlwDmiR0tfTes=)
+      secret-key: ENC(uhO98PMVUKNS9WB3s5XYarwG4DCQZEGlNkA6raXKZTFtjJZzMWlWnTumnPET2G+uICjQ4IpBGM0=)
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    password: ${JASYPT_PASSWORD}
+
+s3:
+  gtc:
+    path: /gtc
+  users:
+    path: /users
