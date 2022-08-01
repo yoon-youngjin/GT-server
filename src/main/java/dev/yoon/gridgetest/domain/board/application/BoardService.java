@@ -6,9 +6,11 @@ import dev.yoon.gridgetest.domain.board.domain.BoardImage;
 import dev.yoon.gridgetest.domain.board.domain.Like;
 import dev.yoon.gridgetest.domain.board.dto.CreateBoardReq;
 import dev.yoon.gridgetest.domain.board.dto.GetMainBoardRes;
+import dev.yoon.gridgetest.domain.board.dto.UpdateBoardReq;
 import dev.yoon.gridgetest.domain.board.repository.BoardRepository;
 import dev.yoon.gridgetest.domain.user.application.UserService;
 import dev.yoon.gridgetest.domain.user.domain.User;
+import dev.yoon.gridgetest.global.error.exception.AuthenticationException;
 import dev.yoon.gridgetest.global.error.exception.EntityNotFoundException;
 import dev.yoon.gridgetest.global.error.exception.ErrorCode;
 import dev.yoon.gridgetest.infra.file.S3Uploader;
@@ -99,6 +101,21 @@ public class BoardService {
 
     public List<Board> getBoardByUser(User user) {
         return boardRepository.findAllByUser(user);
+
+    }
+
+    @Transactional
+    public void updateBoard(UpdateBoardReq request, String phone) {
+
+        User user = userService.getUserByPhoneNumber(phone);
+        Board board = getBoardById(request.getBoardId());
+
+        // 유저 검증
+        if (user != board.getUser()) {
+            throw new AuthenticationException(ErrorCode.BOARD_USER_NOT_WRITER);
+        }
+
+        board.updateContent(request.getContent());
 
     }
 }

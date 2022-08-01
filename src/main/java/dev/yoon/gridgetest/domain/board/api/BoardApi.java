@@ -3,6 +3,7 @@ package dev.yoon.gridgetest.domain.board.api;
 import dev.yoon.gridgetest.domain.board.application.BoardService;
 import dev.yoon.gridgetest.domain.board.dto.CreateBoardReq;
 import dev.yoon.gridgetest.domain.board.dto.GetMainBoardRes;
+import dev.yoon.gridgetest.domain.board.dto.UpdateBoardReq;
 import dev.yoon.gridgetest.global.resolver.UserPhone;
 import dev.yoon.gridgetest.global.util.Constants;
 import lombok.RequiredArgsConstructor;
@@ -58,5 +59,17 @@ public class BoardApi {
         boardService.addOrDeleteLike(boardId, phone);
         return ResponseEntity.ok().build();
     }
+
+    @PatchMapping
+    public ResponseEntity<Void> updateBoard(
+            @RequestBody @Valid UpdateBoardReq request,
+            @UserPhone String phone
+    ) {
+
+        boardService.updateBoard(request, phone);
+        return ResponseEntity.ok().build();
+    }
+
+
 
 }

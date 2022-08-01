@@ -70,9 +70,7 @@ public enum ErrorCode {
 
     // Board
     BOARD_NOT_FOUND(401, "해당 글을 찾을 수 없습니다."),
-    COMMUNITY_USER_NOT_WRITER(403, "해당 글에 대한 작성자가 아닙니다." ),
-    COMMUNITY_IMAGE_EXCEED_NUMBER(400, "최대 10개까지 사진을 추가하실 수 있습니다."),
-    COMMUNITY_IMAGE_NOT_FOUND(401, "해당 글에 대한 이미지를 찾을 수 없습니다."),
+    BOARD_USER_NOT_WRITER(403, "해당 글에 대한 작성자가 아닙니다." ),
     COMMUNITY_ANSWER_NOT_FOUND(401, "해당 답변을 찾을 수 없습니다." ),
     LIKE_NOT_FOUND(401, "해당 좋아요를 찾을 수 없습니다."),
     SAVE_COMMUNITY_NOT_FOUND(401, "저장된 커뮤니티 글을 찾을 수 없습니다."),

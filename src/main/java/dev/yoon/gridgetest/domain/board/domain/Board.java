@@ -52,6 +52,8 @@ public class Board extends BaseTimeEntity {
     )
     private final List<Like> likeList = new ArrayList<>();
 
+//    private Boolean isDeleted;
+
     @Builder
     public Board(String content, User user) {
         this.content = content;
@@ -74,5 +76,9 @@ public class Board extends BaseTimeEntity {
     public void addLike(Like like) {
         likeList.add(like);
         like.setBoard(this);
+    }
+
+    public void updateContent(String content) {
+        this.content = content;
     }
 }
