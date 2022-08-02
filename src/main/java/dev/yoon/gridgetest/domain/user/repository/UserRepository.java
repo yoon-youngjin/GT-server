@@ -2,6 +2,7 @@ package dev.yoon.gridgetest.domain.user.repository;
 
 
 import dev.yoon.gridgetest.domain.user.domain.User;
+import dev.yoon.gridgetest.domain.user.model.Nickname;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,7 +20,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     boolean existsByPhoneNumber(String phoneNumber);
 
-    boolean existsByNickname(String nickname);
+    boolean existsByNickname(Nickname nickname);
 
     Optional<User> findByNicknameOrPhoneNumber(String nickname, String phone);
 

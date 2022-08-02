@@ -1,6 +1,7 @@
 package dev.yoon.gridgetest.domain.user.dto.info;
 
 import dev.yoon.gridgetest.domain.user.domain.User;
+import dev.yoon.gridgetest.domain.user.model.Name;
 import lombok.*;
 
 @Builder
@@ -28,8 +29,8 @@ public class GetUserInfoRes {
 
         return GetUserInfoRes.builder()
                 .userId(user.getId())
-                .name(user.getName())
-                .nickname(user.getNickname())
+                .name(user.getName().getValue())
+                .nickname(user.getNickname().getValue())
                 .followerCnt(0L)
                 .followingCnt(0L)
                 .boardCnt(boardCnt)

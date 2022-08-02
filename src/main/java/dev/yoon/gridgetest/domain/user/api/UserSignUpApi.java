@@ -49,7 +49,6 @@ public class UserSignUpApi {
     public ResponseEntity<Void> checkNickname(
             @Valid NicknameCheckReq request
     ) {
-
         userJoinService.checkNickname(request);
         return ResponseEntity.ok().build();
     }

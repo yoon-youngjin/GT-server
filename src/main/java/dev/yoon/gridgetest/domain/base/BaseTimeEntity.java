@@ -22,4 +22,7 @@ public abstract class BaseTimeEntity {
     @LastModifiedDate
     private LocalDateTime updateTime;
 
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
+    }
 }

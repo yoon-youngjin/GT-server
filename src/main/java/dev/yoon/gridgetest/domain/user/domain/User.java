@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Table(name = "user")
 @Getter
 @NoArgsConstructor
-@SQLDelete(sql = "UPDATE user SET is_delete = true WHERE id=?")
+@SQLDelete(sql = "UPDATE user SET is_deleted = true WHERE id=?")
 @Where(clause = "is_deleted=false")
 public class User extends BaseTimeEntity {
 
@@ -27,11 +27,11 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false, length = 10)
     private UserType userType;
 
-    @Column(length = 20, unique = true)
-    private String nickname;
+    @Embedded
+    private Nickname nickname;
 
-    @Column(length = 20)
-    private String name;
+    @Embedded
+    private Name name;
 
     private String profileUrl;
 
@@ -54,14 +54,19 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false, columnDefinition = "varchar(30) default 'ROLE_USER'")
     private Role role;
 
+    @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;
 
     // 1년 마다 갱신
     private Boolean isAcceptTerms;
 
+    private String webSite;
+
+    private String description;
+
     @Builder
-    public User(UserType userType, Email email, Password password, String socialId, String profileUrl,
-                String nickname, String name, String phoneNumber, Birth birth) {
+    public User(UserType userType, Email email, Password password, String socialId, String webSite, String description,
+                String profileUrl, Nickname nickname, Name name, String phoneNumber, Birth birth) {
 
         this.userType = userType;
         this.email = email;
@@ -69,12 +74,14 @@ public class User extends BaseTimeEntity {
         this.nickname = nickname;
         this.name = name;
         this.phoneNumber = phoneNumber;
-        this.profileUrl = null;
         this.birth = birth;
         this.socialId = socialId;
         this.role = Role.ROLE_USER;
         this.isDeleted = false;
         this.isAcceptTerms = true;
+        this.webSite = webSite;
+        this.description = description;
+        this.profileUrl = profileUrl;
 
     }
 
@@ -85,11 +92,22 @@ public class User extends BaseTimeEntity {
                 .email(user.getEmail())
                 .password(user.getPassword())
                 .nickname(user.getNickname())
+                .name(user.getName())
                 .phoneNumber(user.phoneNumber)
                 .birth(user.birth)
                 .build();
     }
 
 
+    public void updatePassword(String password) {
+        this.password.changePassword(password);
+    }
 
+    public void updateUserInfo(User user) {
+        this.name.changeName(user.getName().getValue());
+        this.nickname.changeNickname(user.getNickname().getValue());
+        this.webSite = user.getWebSite();
+        this.description = user.getDescription();
+
+    }
 }

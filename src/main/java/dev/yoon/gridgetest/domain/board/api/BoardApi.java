@@ -3,7 +3,9 @@ package dev.yoon.gridgetest.domain.board.api;
 import dev.yoon.gridgetest.domain.board.application.BoardService;
 import dev.yoon.gridgetest.domain.board.dto.CreateBoardReq;
 import dev.yoon.gridgetest.domain.board.dto.GetMainBoardRes;
+import dev.yoon.gridgetest.domain.board.dto.ReportBoardReq;
 import dev.yoon.gridgetest.domain.board.dto.UpdateBoardReq;
+import dev.yoon.gridgetest.domain.report.dto.ReportServiceReq;
 import dev.yoon.gridgetest.global.resolver.UserPhone;
 import dev.yoon.gridgetest.global.util.Constants;
 import lombok.RequiredArgsConstructor;
@@ -69,6 +71,18 @@ public class BoardApi {
         boardService.updateBoard(request, phone);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("report")
+    public ResponseEntity<Void> reportBoard(
+            @RequestBody @Valid ReportBoardReq request,
+            @UserPhone String phone
+    ) {
+        boardService.reportBoard(request, phone);
+        return ResponseEntity.ok().build();
+
+    }
+
+
 
 
 

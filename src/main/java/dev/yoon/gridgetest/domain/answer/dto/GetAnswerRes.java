@@ -51,7 +51,7 @@ public class GetAnswerRes {
 
         return GetAnswerRes.builder()
                 .userId(board.getUser().getId())
-                .userNickname(board.getUser().getNickname())
+                .userNickname(board.getUser().getNickname().getValue())
                 .userProfileUrl(board.getUser().getProfileUrl())
                 .boardId(board.getId())
                 .content(board.getContent())
@@ -99,7 +99,7 @@ public class GetAnswerRes {
             return GetAnswerHistRes.builder()
                     .userId(answer.getUser().getId())
                     .userProfileUrl(answer.getUser().getProfileUrl())
-                    .userNickname(answer.getUser().getNickname())
+                    .userNickname(answer.getUser().getNickname().getValue())
                     .answerId(answer.getId())
                     .comment(answer.getComment())
                     .replyCnt(answer.getReplies().size())

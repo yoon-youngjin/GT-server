@@ -6,8 +6,14 @@ import dev.yoon.gridgetest.domain.board.domain.BoardImage;
 import dev.yoon.gridgetest.domain.board.domain.Like;
 import dev.yoon.gridgetest.domain.board.dto.CreateBoardReq;
 import dev.yoon.gridgetest.domain.board.dto.GetMainBoardRes;
+import dev.yoon.gridgetest.domain.board.dto.ReportBoardReq;
 import dev.yoon.gridgetest.domain.board.dto.UpdateBoardReq;
 import dev.yoon.gridgetest.domain.board.repository.BoardRepository;
+import dev.yoon.gridgetest.domain.report.application.ReportService;
+import dev.yoon.gridgetest.domain.report.dto.ReportServiceReq;
+import dev.yoon.gridgetest.domain.report.entity.Report;
+import dev.yoon.gridgetest.domain.report.exception.CantReportMySelfException;
+import dev.yoon.gridgetest.domain.report.model.ServiceType;
 import dev.yoon.gridgetest.domain.user.application.UserService;
 import dev.yoon.gridgetest.domain.user.domain.User;
 import dev.yoon.gridgetest.global.error.exception.AuthenticationException;
@@ -34,6 +40,7 @@ public class BoardService {
     private final UserService userService;
     private final BoardRepository boardRepository;
     private final LikeService likeService;
+    private final ReportService reportService;
 
     private final S3Uploader s3Uploader;
 
@@ -116,6 +123,20 @@ public class BoardService {
         }
 
         board.updateContent(request.getContent());
+
+    }
+
+    public void reportBoard(ReportBoardReq request, String phone) {
+
+        User user = userService.getUserByPhoneNumber(phone);
+        Board board = getBoardById(request.getBoardId());
+
+        if (user == board.getUser()) {
+            throw new CantReportMySelfException(ErrorCode.CANT_REPORT_MYSELF);
+        }
+
+        Report report = Report.createReport(ServiceType.BOARD, user, board.getId(), request.getReason());
+        reportService.report(report);
 
     }
 }

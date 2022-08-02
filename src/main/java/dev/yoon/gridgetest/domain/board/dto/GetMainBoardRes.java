@@ -61,7 +61,7 @@ public class GetMainBoardRes {
                 .content(board.getContent())
                 .imageUrls(imgUrls)
                 .userId(board.getUser().getId())
-                .userNickname(board.getUser().getNickname())
+                .userNickname(board.getUser().getNickname().getValue())
                 .userProfileUrl(board.getUser().getProfileUrl())
                 .likeUser(board.getLikeList().stream().filter(like ->
                         like.getUser() == user).count() != 0)

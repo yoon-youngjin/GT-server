@@ -2,6 +2,7 @@ package dev.yoon.gridgetest.domain.user.validator;
 
 import dev.yoon.gridgetest.domain.user.exception.EmailDuplicateException;
 import dev.yoon.gridgetest.domain.user.exception.NicknameDuplicateException;
+import dev.yoon.gridgetest.domain.user.model.Nickname;
 import dev.yoon.gridgetest.domain.user.repository.UserRepository;
 import dev.yoon.gridgetest.global.error.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +16,9 @@ public class UserValidator {
 
     private final UserRepository userRepository;
 
-    public void validateDuplicateUser(String phoneNumber, String nickname) {
+    public void validateDuplicateUser(String phoneNumber, Nickname nickname) {
         validateDuplicatePhoneNumber(phoneNumber);
         validateDuplicateNickname(nickname);
-
     }
 
     public void validateDuplicatePhoneNumber(String phoneNumber) {
@@ -28,7 +28,7 @@ public class UserValidator {
 
     }
 
-    public void validateDuplicateNickname(String nickname) {
+    public void validateDuplicateNickname(Nickname nickname) {
         if (userRepository.existsByNickname(nickname)) {
             throw new NicknameDuplicateException(ErrorCode.DUPLICATE_NICKNAME);
         }

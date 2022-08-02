@@ -29,43 +29,22 @@ public enum ErrorCode {
     USER_NOT_FOUND(400, "해당 회원은 존재하지 않습니다."),
     NOT_MATCH_USER_TYPE(400, "소셜 타입이 일치하지 않습니다."),
     IS_QUIT_USER(400, "탈퇴한 유저입니다."),
-    // 메일
-    FAILED_TO_SEND_SMS(401, "문자 전송에 실패했습니다."),
+    NOT_EQUALS_PHONE(400, "회원의 전화번호와 일치하지 않습니다."),
+    NOT_EQUALS_CHECK_PASSWORD(400, "비밀번호가 서로 일치하지 않습니다"),
 
     // 인증 코드
     AUTH_CODE_NOT_FOUND(400, "해당 인증 코드를 찾을 수 없습니다."),
     AUTH_CODE_NOT_EQUAL(400, "인증 코드가 일치하지 않습니다. "),
 
-    // 질문
-    QUESTION_NOT_FOUND(400, "해당 질문을 찾을 수 없습니다."),
-    QUESTION_IMAGE_NOT_FOUND(400, "해당 질문 이미지를 찾을 수 없습니다."),
-    CURIOUS_NOT_FOUND(401, "해당 궁금해요를 찾을 수 없습니다."),
-    QUESTION_IMAGE_EXCEED_NUMBER(400, "최대 10개까지 사진을 추가하실 수 있습니다."),
-    FAVORITE_QUESTION_NOT_FOUND(401, "해당 질문에 대한 즐겨찾기를 찾을 수 없습니다."),
-    QUESTION_USER_NOT_WRITER(403, "해당 질문에 대한 작성자가 아닙니다."),
-
     // 답변
     ANSWER_NOT_FOUND(400, "해당 답변을 찾을 수 없습니다."),
     REPLY_USER_NOT_WRITER(403, "해당 답변의 댓글에 대한 작성자가 아닙니다."),
-
-    // 토론
-    DEBATE_NOT_FOUND(401, "토론을 찾을 수 없습니다."),
-    DEBATER_NOT_FOUND(401, "토론에 참여 중인 유저를 찾을 수 없습니다."),
-    DEBATE_USER_NOT_WRITER(403, "해당 토론에 대한 작성자가 아닙니다."),
-    DEBATE_ANSWER_NOT_FOUND(401, "해당 토론 답변을 찾을 수 없습니다."),
-    DEBATE_ANSWER_USER_NOT_WRITER(401, "해당 토론 답변에 대한 작성자가 아닙니다."),
-    DEBATE_ANSWER_REPLY_NOT_FOUND(401, "해당 토론 댓글을 찾을 수 없습니다."),
-    DEBATE_REPLY_USER_NOT_WRITER(403, "해당 답변의 댓글에 대한 작성자가 아닙니다."),
-    DEBATE_PARTICIPATE_DEBATER_NOT_EXISTS(400, "현재 유저들이 참여한 토론을 찾을 수 없습니다."),
-    SAME_OPTIONS(400, "선택지가 동일한 토론을 생성할 수 없습니다."),
-    CLOSED_DEBATE(400, "마감된 토론입니다."),
+    USER_NOT_WRITER(403, "해당 글에 대한 작성자가 아닙니다." ),
 
     // 알림
     NOTIFICATION_NOT_FOUND(401, "해당 알림을 찾을 수 없습니다."),
     NOTIFICATION_FAILED(400, "알림 전송에 실패하였습니다."),
 
-    //TODO 위치 고민
-    // 소셜 로그인 -> 회원가입 진행
     PROCEED_WITH_SIGNUP(300, "회원가입을 진행해주세요."),
 
     // Board
@@ -76,14 +55,16 @@ public enum ErrorCode {
     SAVE_COMMUNITY_NOT_FOUND(401, "저장된 커뮤니티 글을 찾을 수 없습니다."),
 
     // 신고
-    ALREADY_RECEIVED_REPORT(400, "이미 접수된 신고입니다."),
+    CANT_REPORT_MYSELF(400, "자신의 게시물은 신고할 수 없습니다."),
 
     // 메시지
     CANT_SEND_ME_MESSAGE(400, "자신에게는 메일을 보낼 수 없습니다."),
 
-    // 차단
-    BLOCK_USER(400, "차단한 유저입니다."),
-    ALREADY_BLOCKED_USER(400, "이미 차단한 유저입니다.");
+    // 변경
+    CANT_CHANGE_2_WEEKS(400, "2주 이내에 비밀번호를 2번까지 변경할 수 있습니다."),
+
+    FAILED_TO_SEND_SMS(400, "문자 전송에 실패했습니다.");
+
 
 
     ErrorCode(int status, String message) {

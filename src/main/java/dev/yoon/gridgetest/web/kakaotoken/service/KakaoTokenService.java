@@ -34,7 +34,7 @@ public class KakaoTokenService {
                 GRANT_TYPE, clientId, REDIRECT_URI, code, clientSecret);
 
         if (response.getStatusCode() != HttpStatus.OK) {
-            throw new TokenNotFoundException(ErrorCode.BLOCK_USER);
+            throw new TokenNotFoundException(ErrorCode.ANSWER_NOT_FOUND);
         }
         return response.getBody();
     }

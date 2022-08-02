@@ -12,6 +12,7 @@ import dev.yoon.gridgetest.domain.user.dto.signup.NicknameCheckReq;
 import dev.yoon.gridgetest.domain.user.dto.signup.SendSmsAuthReq;
 import dev.yoon.gridgetest.domain.user.dto.signup.SendSmsReq;
 import dev.yoon.gridgetest.domain.user.dto.signup.SignUpDto;
+import dev.yoon.gridgetest.domain.user.model.Nickname;
 import dev.yoon.gridgetest.domain.user.validator.UserValidator;
 import dev.yoon.gridgetest.infra.email.SmsService;
 import lombok.RequiredArgsConstructor;
@@ -55,7 +56,7 @@ public class UserJoinService {
     }
 
     public void checkNickname(NicknameCheckReq request) {
-        userService.existsUserByNickname(request.getNickname());
+        userService.existsUserByNickname(Nickname.from(request.getNickname()));
 
     }
 

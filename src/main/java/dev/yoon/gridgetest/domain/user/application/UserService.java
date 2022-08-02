@@ -2,6 +2,7 @@ package dev.yoon.gridgetest.domain.user.application;
 
 import dev.yoon.gridgetest.domain.user.model.Email;
 import dev.yoon.gridgetest.domain.user.domain.User;
+import dev.yoon.gridgetest.domain.user.model.Nickname;
 import dev.yoon.gridgetest.domain.user.repository.UserRepository;
 import dev.yoon.gridgetest.domain.user.validator.UserValidator;
 import dev.yoon.gridgetest.global.error.exception.EntityNotFoundException;
@@ -48,7 +49,7 @@ public class UserService {
         return userRepository.existsByPhoneNumber(phone);
     }
 
-    public void existsUserByNickname(String nickname) {
+    public void existsUserByNickname(Nickname nickname) {
         userValidator.validateDuplicateNickname(nickname);
     }
 

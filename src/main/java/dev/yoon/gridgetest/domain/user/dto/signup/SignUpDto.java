@@ -3,9 +3,7 @@ package dev.yoon.gridgetest.domain.user.dto.signup;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import dev.yoon.gridgetest.domain.jwt.dto.TokenDto;
 import dev.yoon.gridgetest.domain.user.domain.User;
-import dev.yoon.gridgetest.domain.user.model.Birth;
-import dev.yoon.gridgetest.domain.user.model.Password;
-import dev.yoon.gridgetest.domain.user.model.UserType;
+import dev.yoon.gridgetest.domain.user.model.*;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
@@ -27,8 +25,12 @@ public class SignUpDto {
         private String phone;
 
         @NotBlank(message = "이름은 필수값 입니다.")
-        @Length(min = 1, max = 20, message = "최대 20자리까지 입력할 수 있습니다")
+        @Pattern(regexp = "[a-z0-9_.]{1,20}", message = "이름은 영문, 숫자, 특수문자('_', '.')을 포함하여 20자 이내로 가능합니다.")
         private String name;
+
+        @NotBlank(message = "닉네임은 필수값 입니다.")
+        @Pattern(regexp = "[a-z0-9_.]{1,20}", message = "이름은 영문, 숫자, 특수문자('_', '.')을 포함하여 20자 이내로 가능합니다.")
+        private String nickname;
 
         @NotBlank(message = "비밀번호는 필수값 입니다.")
         @Length(min = 1, max = 20, message = "최대 20자리까지 입력할 수 있습니다")
@@ -37,20 +39,15 @@ public class SignUpDto {
         @NotBlank(message = "생년월일을 필수값 입니다.")
         private String birth;
 
-        @NotBlank(message = "닉네임은 필수값 입니다.")
-        @Length(min = 1, max = 20, message = "최대 20자리까지 입력할 수 있습니다")
-        private String nickname;
-
-
         public User toEntity() {
 
             User user = User.builder()
                     .email(null)
-                    .password(Password.toPassword(password))
+                    .password(Password.from(password))
                     .userType(UserType.GENERAL)
-                    .nickname(nickname)
+                    .nickname(Nickname.from(nickname))
                     .phoneNumber(phone)
-                    .name(name)
+                    .name(Name.from(name))
                     .birth(Birth.toBirth(birth))
                     .build();
 

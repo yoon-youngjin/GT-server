@@ -22,7 +22,7 @@ public class Password {
         this.value = encodePassword(value);
     }
 
-    public static Password toPassword(String value) {
+    public static Password from(String value) {
         return Password.builder()
                 .value(value)
                 .build();
@@ -34,6 +34,10 @@ public class Password {
 
     public boolean isMatches(String rawPassword) {
         return new BCryptPasswordEncoder().matches(rawPassword, this.value);
+    }
+
+    public void changePassword(final String newPassword) {
+        value = encodePassword(newPassword);
     }
 
 }

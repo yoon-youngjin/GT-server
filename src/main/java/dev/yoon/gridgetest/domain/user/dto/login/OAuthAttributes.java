@@ -2,6 +2,8 @@ package dev.yoon.gridgetest.domain.user.dto.login;
 
 import dev.yoon.gridgetest.domain.user.domain.User;
 import dev.yoon.gridgetest.domain.user.model.Birth;
+import dev.yoon.gridgetest.domain.user.model.Name;
+import dev.yoon.gridgetest.domain.user.model.Nickname;
 import dev.yoon.gridgetest.domain.user.model.UserType;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,8 +24,8 @@ public class OAuthAttributes {
         User user = User.builder()
                 .email(null)
                 .phoneNumber(request.getPhone())
-                .name(request.getName())
-                .nickname(request.getNickname())
+                .name(Name.from(request.getName()))
+                .nickname(Nickname.from(request.getNickname()))
                 .password(null)
                 .birth(Birth.toBirth(request.getBirth()))
                 .userType(userType)

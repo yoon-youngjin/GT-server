@@ -4,6 +4,7 @@ import dev.yoon.gridgetest.domain.answer.application.AnswerService;
 import dev.yoon.gridgetest.domain.answer.dto.CreateAnswerReq;
 import dev.yoon.gridgetest.domain.answer.dto.CreateReplyReq;
 import dev.yoon.gridgetest.domain.answer.dto.GetAnswerRes;
+import dev.yoon.gridgetest.domain.answer.dto.ReportAnswerReq;
 import dev.yoon.gridgetest.global.resolver.UserPhone;
 import dev.yoon.gridgetest.global.util.Constants;
 import lombok.RequiredArgsConstructor;
@@ -73,6 +74,29 @@ public class AnswerApi {
         answerService.addOrDeleteLike(answerId, phone);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/answers/report")
+    public ResponseEntity<Void> reportAnswer(
+            @RequestBody @Valid ReportAnswerReq request,
+            @UserPhone String phone
+    ) {
+        answerService.reportAnswer(request, phone);
+        return ResponseEntity.ok().build();
+
+    }
+
+    @PatchMapping("/answers/{answerId}")
+    public ResponseEntity<Void> deleteAnswer(
+            @PathVariable("answerId") Long answerId,
+            @UserPhone String phone
+    ){
+        answerService.deleteAnswer(answerId, phone);
+        return ResponseEntity.ok().build();
+    }
+
+
+
+
 
 
 }
