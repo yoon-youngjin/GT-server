@@ -63,7 +63,9 @@ public enum ErrorCode {
     // 변경
     CANT_CHANGE_2_WEEKS(400, "2주 이내에 비밀번호를 2번까지 변경할 수 있습니다."),
 
-    FAILED_TO_SEND_SMS(400, "문자 전송에 실패했습니다.");
+    FAILED_TO_SEND_SMS(400, "문자 전송에 실패했습니다."),
+    // follow
+    FOLLOW_NOT_FOUND(400, "해당 팔로우를 찾을 수 없습니다.");
 
 
 

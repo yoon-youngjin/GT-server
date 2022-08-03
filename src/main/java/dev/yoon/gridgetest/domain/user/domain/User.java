@@ -64,6 +64,8 @@ public class User extends BaseTimeEntity {
 
     private String description;
 
+    private Boolean isPrivateUser;
+
     @Builder
     public User(UserType userType, Email email, Password password, String socialId, String webSite, String description,
                 String profileUrl, Nickname nickname, Name name, String phoneNumber, Birth birth) {
@@ -79,6 +81,7 @@ public class User extends BaseTimeEntity {
         this.role = Role.ROLE_USER;
         this.isDeleted = false;
         this.isAcceptTerms = true;
+        this.isPrivateUser = false;
         this.webSite = webSite;
         this.description = description;
         this.profileUrl = profileUrl;
@@ -108,6 +111,13 @@ public class User extends BaseTimeEntity {
         this.nickname.changeNickname(user.getNickname().getValue());
         this.webSite = user.getWebSite();
         this.description = user.getDescription();
+    }
 
+    public void updatePrivate() {
+        this.isPrivateUser = !this.isPrivateUser;
+    }
+
+    public void quit() {
+        this.isDeleted = true;
     }
 }

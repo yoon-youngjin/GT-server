@@ -108,4 +108,17 @@ public class UserInfoService {
         user.updateUserInfo(updateUser);
 
     }
+
+    @Transactional
+    public void updatePrivate(String phone) {
+        User user = userService.getUserByPhoneNumber(phone);
+        user.updatePrivate();
+
+    }
+
+    @Transactional
+    public void quitUser(String phone) {
+        User user = userService.getUserByPhoneNumber(phone);
+        user.quit();
+    }
 }

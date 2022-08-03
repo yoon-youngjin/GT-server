@@ -73,5 +73,23 @@ public class UserInfoApi {
         return ResponseEntity.ok().build();
     }
 
+    @PatchMapping("/private")
+    public ResponseEntity<Void> updatePrivateUser(
+            @UserPhone String phone
+    ) {
+        userInfoService.updatePrivate(phone);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/quit")
+    public ResponseEntity<Void> quitUser(
+            @UserPhone String phone
+
+    ){
+        userInfoService.quitUser(phone);
+        return ResponseEntity.ok().build();
+
+    }
+
 
 }

@@ -1,7 +1,6 @@
 package dev.yoon.gridgetest.domain.user.dto.info;
 
 import dev.yoon.gridgetest.domain.user.domain.User;
-import dev.yoon.gridgetest.domain.user.model.Name;
 import lombok.*;
 
 @Builder
