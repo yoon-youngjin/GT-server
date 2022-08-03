@@ -9,6 +9,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "user")
@@ -47,8 +48,8 @@ public class User extends BaseTimeEntity {
     @Column(length = 20, unique = true)
     private String phoneNumber;
 
-    @Embedded
-    private Birth birth;
+    @Column(length = 10)
+    private LocalDate birth;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, columnDefinition = "varchar(30) default 'ROLE_USER'")
@@ -66,9 +67,12 @@ public class User extends BaseTimeEntity {
 
     private Boolean isPrivateUser;
 
+    @Enumerated(EnumType.STRING)
+    private UserState userState;
+
     @Builder
     public User(UserType userType, Email email, Password password, String socialId, String webSite, String description,
-                String profileUrl, Nickname nickname, Name name, String phoneNumber, Birth birth) {
+                String profileUrl, Nickname nickname, Name name, String phoneNumber, LocalDate birth) {
 
         this.userType = userType;
         this.email = email;
@@ -78,13 +82,14 @@ public class User extends BaseTimeEntity {
         this.phoneNumber = phoneNumber;
         this.birth = birth;
         this.socialId = socialId;
-        this.role = Role.ROLE_USER;
+        this.role = Role.ROLE_ADMIN;
         this.isDeleted = false;
         this.isAcceptTerms = true;
         this.isPrivateUser = false;
         this.webSite = webSite;
         this.description = description;
         this.profileUrl = profileUrl;
+        this.userState = UserState.ACTIVE;
 
     }
 
@@ -97,7 +102,7 @@ public class User extends BaseTimeEntity {
                 .nickname(user.getNickname())
                 .name(user.getName())
                 .phoneNumber(user.phoneNumber)
-                .birth(user.birth)
+                .birth(user.getBirth())
                 .build();
     }
 
@@ -119,5 +124,6 @@ public class User extends BaseTimeEntity {
 
     public void quit() {
         this.isDeleted = true;
+        this.userState = UserState.INACTIVE;
     }
 }

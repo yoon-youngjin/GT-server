@@ -1,5 +1,6 @@
 package dev.yoon.gridgetest.global.config;
 
+import dev.yoon.gridgetest.global.interceptor.AdminAuthorizationInterceptor;
 import dev.yoon.gridgetest.global.interceptor.AuthenticationInterceptor;
 import dev.yoon.gridgetest.global.resolver.UserPhoneArgumentResolver;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,8 @@ public class WebConfig implements WebMvcConfigurer {
 
     private final AuthenticationInterceptor authenticationInterceptor;
 
+    private final AdminAuthorizationInterceptor adminAuthorizationInterceptor;
+
     private final UserPhoneArgumentResolver userPhoneArgumentResolver;
 
     @Override
@@ -33,6 +36,10 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/api/users/login", "/api/users/oauth/login", "/api/users/oauth/sign-up", "/api/users/sign-up", "/api/sms/send",
                         "/api/duplicated/nickname", "/api/sms/auth", "/api/health", "/api/token/reissue") // 해당 경로는 인터셉터가 가로채지 않는다.
                 .addPathPatterns("/api/**");
+
+        registry.addInterceptor(adminAuthorizationInterceptor)
+                .order(2)
+                .addPathPatterns("/api/admin/**");
 
     }
 

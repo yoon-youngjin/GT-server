@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.util.Date;
 
 public class OauthSignUpDto {
@@ -26,6 +27,7 @@ public class OauthSignUpDto {
         private String name;
 
         @NotBlank(message = "생년월일을 필수값 입니다.")
+        @Pattern(regexp = "(19|20)\\d{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])", message = "YYYYMMDD 형식으로 입력해주세요.")
         private String birth;
 
         @NotBlank(message = "닉네임은 필수값 입니다.")

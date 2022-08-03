@@ -1,5 +1,6 @@
 package dev.yoon.gridgetest.domain.user.application.info;
 
+import dev.yoon.gridgetest.domain.admin.dto.GetUserInfoDto;
 import dev.yoon.gridgetest.domain.board.application.BoardService;
 import dev.yoon.gridgetest.domain.user.application.UserService;
 import dev.yoon.gridgetest.domain.user.domain.User;
@@ -13,6 +14,8 @@ import dev.yoon.gridgetest.global.error.exception.ErrorCode;
 import dev.yoon.gridgetest.infra.file.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -120,5 +123,12 @@ public class UserInfoService {
     public void quitUser(String phone) {
         User user = userService.getUserByPhoneNumber(phone);
         user.quit();
+    }
+
+
+
+    public Page<User> getAllUsersByQuery(Pageable pageable, GetUserInfoDto.Request request) {
+        return userRepository.findAllUsersByQuery(pageable, request);
+
     }
 }

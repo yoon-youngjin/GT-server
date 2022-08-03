@@ -1,7 +1,9 @@
 package dev.yoon.gridgetest.global.util;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
@@ -21,6 +23,10 @@ public class DateTimeUtils {
         return dateToConvert.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime();
+    }
+
+    public static LocalDate convertToLocalDate(String date) {
+        return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyyMMdd"));
     }
 
     public static String convertToLocalDatetimeToTime(LocalDateTime localDateTime) {

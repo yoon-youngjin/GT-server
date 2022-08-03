@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import dev.yoon.gridgetest.domain.jwt.dto.TokenDto;
 import dev.yoon.gridgetest.domain.user.domain.User;
 import dev.yoon.gridgetest.domain.user.model.*;
+import dev.yoon.gridgetest.global.util.DateTimeUtils;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
@@ -36,7 +37,9 @@ public class SignUpDto {
         @Length(min = 1, max = 20, message = "최대 20자리까지 입력할 수 있습니다")
         private String password;
 
+        // YYYYMMDD
         @NotBlank(message = "생년월일을 필수값 입니다.")
+        @Pattern(regexp = "(19|20)\\d{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])", message = "YYYYMMDD 형식으로 입력해주세요.")
         private String birth;
 
         public User toEntity() {
@@ -48,7 +51,7 @@ public class SignUpDto {
                     .nickname(Nickname.from(nickname))
                     .phoneNumber(phone)
                     .name(Name.from(name))
-                    .birth(Birth.toBirth(birth))
+                    .birth(DateTimeUtils.convertToLocalDate(birth))
                     .build();
 
             return user;
