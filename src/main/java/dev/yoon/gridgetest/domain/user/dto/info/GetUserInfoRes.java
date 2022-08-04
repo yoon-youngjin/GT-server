@@ -24,14 +24,14 @@ public class GetUserInfoRes {
 
     private Long boardCnt;
 
-    public static GetUserInfoRes of(User user, Long boardCnt) {
+    public static GetUserInfoRes of(User user, Long boardCnt, Long followerCnt, Long followingCnt) {
 
         return GetUserInfoRes.builder()
                 .userId(user.getId())
                 .name(user.getName().getValue())
                 .nickname(user.getNickname().getValue())
-                .followerCnt(0L)
-                .followingCnt(0L)
+                .followerCnt(followerCnt)
+                .followingCnt(followingCnt)
                 .boardCnt(boardCnt)
                 .build();
 

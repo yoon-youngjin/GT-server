@@ -2,6 +2,7 @@ package dev.yoon.gridgetest.domain.user.application.info;
 
 import dev.yoon.gridgetest.domain.admin.dto.users.GetUserInfoDto;
 import dev.yoon.gridgetest.domain.board.application.BoardService;
+import dev.yoon.gridgetest.domain.follow.application.FollowService;
 import dev.yoon.gridgetest.domain.user.application.UserService;
 import dev.yoon.gridgetest.domain.user.domain.User;
 import dev.yoon.gridgetest.domain.user.dto.info.*;
@@ -13,6 +14,7 @@ import dev.yoon.gridgetest.domain.user.validator.UserValidator;
 import dev.yoon.gridgetest.global.error.exception.ErrorCode;
 import dev.yoon.gridgetest.infra.file.S3Uploader;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +23,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -35,6 +39,7 @@ public class UserInfoService {
     private final UserValidator userValidator;
     private final S3Uploader s3Uploader;
     private final UserRepository userRepository;
+    private final FollowService followService;
 
     public GetUserInfoRes getUserInfo(String phone) {
 
@@ -43,11 +48,13 @@ public class UserInfoService {
         // 작성한 글 개수
         Long boardCnt = boardService.getBoardCountByUser(user);
 
-        // 팔로우 개수
+        // 팔로워 개수
+        Long followerCnt = followService.getFollowerCount(user);
 
         // 팔로잉 개수
+        Long followingCnt = followService.getFollowingCount(user);
 
-        return GetUserInfoRes.of(user, boardCnt);
+        return GetUserInfoRes.of(user, boardCnt, followerCnt, followingCnt);
 
     }
 
@@ -59,6 +66,8 @@ public class UserInfoService {
         }
         User user = userService.getUserByPhoneNumber(phone);
         user.updatePassword(request.getPassword());
+
+        log.info("[유저 비밀번호 변경]/" + user.getNickname().getValue() + "/" + LocalDateTime.now());
 
     }
 
@@ -91,7 +100,7 @@ public class UserInfoService {
         user.getNickname().isValidUpdate();
 
         // 닉네임 중복 검사
-        userValidator.validateDuplicateNickname(Nickname.from(request.getNickname()));
+        userValidator.validateDuplicateNickname(request.getNickname());
 
     }
 
@@ -110,6 +119,9 @@ public class UserInfoService {
 
         user.updateUserInfo(updateUser);
 
+        log.info("[유저 정보 변경]/" + user.getNickname().getValue() + "/" + LocalDateTime.now());
+
+
     }
 
     @Transactional
@@ -117,12 +129,18 @@ public class UserInfoService {
         User user = userService.getUserByPhoneNumber(phone);
         user.updatePrivate();
 
+        log.info("[유저 비활성화]/" + user.getNickname().getValue() + "/" + LocalDateTime.now());
+
+
     }
 
     @Transactional
     public void quitUser(String phone) {
         User user = userService.getUserByPhoneNumber(phone);
         userService.quitUser(user);
+
+        log.info("[유저 탈퇴]/" + user.getNickname().getValue() + "/" + LocalDateTime.now());
+
     }
 
 

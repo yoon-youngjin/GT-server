@@ -22,6 +22,7 @@ import dev.yoon.gridgetest.global.error.exception.EntityNotFoundException;
 import dev.yoon.gridgetest.global.error.exception.ErrorCode;
 import dev.yoon.gridgetest.infra.file.S3Uploader;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,8 +30,10 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 @Transactional(readOnly = true)
@@ -45,6 +48,7 @@ public class BoardService {
     private final ReportService reportService;
 
     private final S3Uploader s3Uploader;
+
 
     @Transactional
     public void createBoard(CreateBoardReq request, String phone) {
@@ -66,6 +70,9 @@ public class BoardService {
             saveBoard.addBoardImage(boardImage);
 
         });
+
+        log.info("[피드 생성] " + user.getNickname() + " " + LocalDateTime.now());
+
 
         // 글 저장
         boardRepository.save(saveBoard);

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds">
+    <timestamp key="BY_DATE" datePattern="yyyy-MM-dd"/>
+    <property name="LOG_PATTERN"
+              value="[%d{yyyy-MM-dd HH:mm:ss}:%-4relative] %green([%thread]) %highlight(%-5level) %boldWhite([%C.%M:%yellow(%L)]) - %msg%n"/>
+
+
+    <appender name="INFO_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>./logs/info.log</file> <!-- 파일을 저장할 경로를 정한다 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch> <!-- 해당 레벨만 기록한다. -->
+            <onMismatch>DENY</onMismatch> <!-- 다른 수준의 레벨은 기록하지 않는다.(상위 레벨도 기록 안함), 상위 수준의 레벨에 대한 기록을 원하면 ACCEPT 로 하면 기록된다. -->
+        </filter> <!-- 레벨별 필터링이 필요없을 경우 filter class 관련된 부분을 삭제하면 됨-->
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>./was-logs/info.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern> <!-- 해당 패턴 네이밍으로 이전 파일이 기록됨 -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize> <!-- 한 파일의 최대 용량 -->
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>180</maxHistory> <!-- 한 파일의 최대 저장 기한 -->
+        </rollingPolicy>
+    </appender>
+
+    <appender name="FILE-USER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>./log/user/user-${BY_DATE}.log</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>./backup/user/user-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern> </pattern>
+            <pattern>${LOG_PATTERN}</pattern>
+        </layout>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+    </root>
+
+    <logger name="dev.yoon.gridgetest.domain.user" level="INFO">
+        <appender-ref ref="FILE-USER"/>
+    </logger>
+
+
+<!--    <logger name="dev.yoon.gridgetest.domain.report" level="WARN">-->
+<!--        <appender-ref ref="APP_FILE"/>-->
+<!--        <appender-ref ref="ERROR_FILE"/>-->
+<!--    </logger>-->
+
+<!--    <logger name="dev.yoon.gridgetest.domain.board" level="WARN">-->
+<!--        <appender-ref ref="APP_FILE"/>-->
+<!--        <appender-ref ref="ERROR_FILE"/>-->
+<!--    </logger>-->
+
+<!--    <logger name="dev.yoon.gridgetest.domain.answer" level="WARN">-->
+<!--        <appender-ref ref="APP_FILE"/>-->
+<!--        <appender-ref ref="ERROR_FILE"/>-->
+<!--    </logger>-->
+</configuration>

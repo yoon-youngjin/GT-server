@@ -20,9 +20,9 @@ public interface UserRepository extends JpaRepository<User, Long>, UserRepositor
 
     boolean existsByPhoneNumber(String phoneNumber);
 
-    boolean existsByNickname(Nickname nickname);
+    boolean existsByNicknameValue(String nickname);
 
-    Optional<User> findByNicknameOrPhoneNumber(String nickname, String phone);
+    Optional<User> findByNicknameValueOrPhoneNumber(String nickname, String phone);
 
     @Modifying
     @Transactional

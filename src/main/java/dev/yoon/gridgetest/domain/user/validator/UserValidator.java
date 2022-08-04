@@ -18,7 +18,7 @@ public class UserValidator {
 
     public void validateDuplicateUser(String phoneNumber, Nickname nickname) {
         validateDuplicatePhoneNumber(phoneNumber);
-        validateDuplicateNickname(nickname);
+        validateDuplicateNickname(nickname.getValue());
     }
 
     public void validateDuplicatePhoneNumber(String phoneNumber) {
@@ -28,8 +28,8 @@ public class UserValidator {
 
     }
 
-    public void validateDuplicateNickname(Nickname nickname) {
-        if (userRepository.existsByNickname(nickname)) {
+    public void validateDuplicateNickname(String nickname) {
+        if (userRepository.existsByNicknameValue(nickname)) {
             throw new NicknameDuplicateException(ErrorCode.DUPLICATE_NICKNAME);
         }
     }

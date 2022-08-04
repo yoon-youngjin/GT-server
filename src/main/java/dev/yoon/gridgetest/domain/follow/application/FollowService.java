@@ -85,4 +85,11 @@ public class FollowService {
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.FOLLOW_NOT_FOUND));
     }
 
+    public Long getFollowerCount(User user) {
+        return followRepository.countAllByTo(user);
+    }
+
+    public Long getFollowingCount(User user) {
+        return followRepository.countAllByFrom(user);
+    }
 }

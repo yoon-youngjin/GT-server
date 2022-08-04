@@ -16,11 +16,14 @@ import dev.yoon.gridgetest.domain.user.model.UserType;
 import dev.yoon.gridgetest.global.error.exception.BusinessException;
 import dev.yoon.gridgetest.global.error.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -43,6 +46,9 @@ public class UserLoginService {
 
         TokenDto tokenDto = tokenManager.createTokenDto(user);
         saveRefreshToken(user, tokenDto);
+
+        log.info("[유저 로그인]/" + user.getNickname().getValue() + "/" + LocalDateTime.now());
+
         return LoginDto.Response.from(tokenDto);
 
     }
@@ -51,7 +57,6 @@ public class UserLoginService {
     public OauthLoginDto.Response loginOauth(String accessToken, OauthLoginDto.Request request) {
         OAuthAttributes oAuthAttributes = getSocialUserInfo(accessToken, UserType.from(request.getUserType()));
 
-        System.out.println(oAuthAttributes.getSocialId());
         Optional<User> user = userService.getUserBySocialId(oAuthAttributes.getSocialId());
 
         // 회원가입
@@ -63,6 +68,9 @@ public class UserLoginService {
             user.get().updateLoginTime();
             TokenDto tokenDto = tokenManager.createTokenDto(user.get());
             saveRefreshToken(user.get(), tokenDto);
+
+            log.info("[유저 소셜 로그인]/" + user.get().getNickname().getValue() + "/" + LocalDateTime.now());
+
             return OauthLoginDto.Response.from(tokenDto);
 
         }
@@ -79,6 +87,8 @@ public class UserLoginService {
         //JWT 생성
         TokenDto tokenDto = tokenManager.createTokenDto(user);
         saveRefreshToken(user, tokenDto);
+
+        log.info("[유저 소셜 회원가입]/" + user.getNickname().getValue() + "/" + LocalDateTime.now());
         return OauthSignUpDto.Response.from(tokenDto);
 
     }
@@ -91,7 +101,6 @@ public class UserLoginService {
 
     }
 
-    @Transactional
     private void saveRefreshToken(User user, TokenDto tokenDto) {
 
         RefreshToken refreshToken = RefreshToken.of(

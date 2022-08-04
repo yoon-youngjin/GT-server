@@ -49,12 +49,12 @@ public class UserService {
         return userRepository.existsByPhoneNumber(phone);
     }
 
-    public void existsUserByNickname(Nickname nickname) {
+    public void existsUserByNickname(String nickname) {
         userValidator.validateDuplicateNickname(nickname);
     }
 
     public User getUserByNicknameOrPhone(String id) {
-        return userRepository.findByNicknameOrPhoneNumber(id, id)
+        return userRepository.findByNicknameValueOrPhoneNumber(id, id)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.USER_NOT_FOUND));
 
     }

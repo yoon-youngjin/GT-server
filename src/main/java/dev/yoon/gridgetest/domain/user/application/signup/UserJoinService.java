@@ -16,9 +16,13 @@ import dev.yoon.gridgetest.domain.user.model.Nickname;
 import dev.yoon.gridgetest.domain.user.validator.UserValidator;
 import dev.yoon.gridgetest.infra.email.SmsService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -52,12 +56,14 @@ public class UserJoinService {
         //JWT 생성
         TokenDto tokenDto = tokenManager.createTokenDto(user);
         saveRefreshToken(user, tokenDto);
+
+        log.info("[유저 회원가입]/" + user.getNickname().getValue() + "/" + LocalDateTime.now());
         return SignUpDto.Response.from(tokenDto);
 
     }
 
     public void checkNickname(NicknameCheckReq request) {
-        userService.existsUserByNickname(Nickname.from(request.getNickname()));
+        userService.existsUserByNickname(request.getNickname());
 
     }
 
