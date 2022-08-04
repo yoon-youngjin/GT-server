@@ -82,8 +82,15 @@ public class BoardApi {
 
     }
 
+    @DeleteMapping("/{boardId}")
+    public ResponseEntity<Void> deleteBoard(
+            @PathVariable("boardId") Long boardId,
+            @UserPhone String phone
+    ) {
 
-
+        boardService.deleteBoard(boardId, phone);
+        return ResponseEntity.ok().build();
+    }
 
 
 }

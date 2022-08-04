@@ -48,6 +48,7 @@ public class UserJoinService {
         User user = signUpDto.toEntity();
         user = userService.register(user);
 
+        user.updateLoginTime();
         //JWT 생성
         TokenDto tokenDto = tokenManager.createTokenDto(user);
         saveRefreshToken(user, tokenDto);

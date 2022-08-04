@@ -56,6 +56,7 @@ public enum ErrorCode {
 
     // 신고
     CANT_REPORT_MYSELF(400, "자신의 게시물은 신고할 수 없습니다."),
+    REPORT_NOT_FOUND(401, "해당 신고를 찾을 수 없습니다."),
 
     // 메시지
     CANT_SEND_ME_MESSAGE(400, "자신에게는 메일을 보낼 수 없습니다."),

@@ -18,8 +18,6 @@ import java.util.List;
 @Table(name = "answer")
 @Getter
 @NoArgsConstructor
-@SQLDelete(sql = "UPDATE answer SET is_deleted = true WHERE id=?")
-@Where(clause = "is_deleted=false")
 public class Answer extends BaseTimeEntity {
 
     @Id
@@ -56,8 +54,6 @@ public class Answer extends BaseTimeEntity {
     )
     private final List<AnswerLike> likeList = new ArrayList<>();
 
-    @Column(name = "is_deleted", nullable = false)
-    private Boolean isDeleted;
 
 
     @Builder
@@ -65,7 +61,6 @@ public class Answer extends BaseTimeEntity {
         this.comment = comment;
         this.user = user;
         this.board = board;
-        this.isDeleted = false;
     }
 
     public static Answer createAnswer(User user, Board board, Answer answer) {

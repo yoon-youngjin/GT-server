@@ -10,18 +10,18 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "user")
 @Getter
 @NoArgsConstructor
-@SQLDelete(sql = "UPDATE user SET is_deleted = true WHERE id=?")
-@Where(clause = "is_deleted=false")
+@SQLDelete(sql = "UPDATE user SET is_deleted = true, user_state = 'INACTIVE' WHERE user_id=?")
 public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "USER_ID")
+    @Column(name = "user_id")
     private Long Id;
 
     @Enumerated(EnumType.STRING)
@@ -70,6 +70,8 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private UserState userState;
 
+    private LocalDateTime logInTime;
+
     @Builder
     public User(UserType userType, Email email, Password password, String socialId, String webSite, String description,
                 String profileUrl, Nickname nickname, Name name, String phoneNumber, LocalDate birth) {
@@ -90,6 +92,7 @@ public class User extends BaseTimeEntity {
         this.description = description;
         this.profileUrl = profileUrl;
         this.userState = UserState.ACTIVE;
+        this.logInTime = LocalDateTime.now();
 
     }
 
@@ -122,8 +125,11 @@ public class User extends BaseTimeEntity {
         this.isPrivateUser = !this.isPrivateUser;
     }
 
-    public void quit() {
-        this.isDeleted = true;
-        this.userState = UserState.INACTIVE;
+    public void updateLoginTime() {
+        logInTime = LocalDateTime.now();
+    }
+
+    public void updateUserState(UserState state) {
+        userState = state;
     }
 }

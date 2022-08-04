@@ -1,6 +1,6 @@
 package dev.yoon.gridgetest.domain.user.application.info;
 
-import dev.yoon.gridgetest.domain.admin.dto.GetUserInfoDto;
+import dev.yoon.gridgetest.domain.admin.dto.users.GetUserInfoDto;
 import dev.yoon.gridgetest.domain.board.application.BoardService;
 import dev.yoon.gridgetest.domain.user.application.UserService;
 import dev.yoon.gridgetest.domain.user.domain.User;
@@ -122,7 +122,7 @@ public class UserInfoService {
     @Transactional
     public void quitUser(String phone) {
         User user = userService.getUserByPhoneNumber(phone);
-        user.quit();
+        userService.quitUser(user);
     }
 
 
@@ -131,4 +131,6 @@ public class UserInfoService {
         return userRepository.findAllUsersByQuery(pageable, request);
 
     }
+
+
 }

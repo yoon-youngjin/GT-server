@@ -1,6 +1,7 @@
 package dev.yoon.gridgetest.domain.board.application;
 
 
+import dev.yoon.gridgetest.domain.admin.dto.board.GetBoardInfoDto;
 import dev.yoon.gridgetest.domain.board.domain.Board;
 import dev.yoon.gridgetest.domain.board.domain.BoardImage;
 import dev.yoon.gridgetest.domain.board.domain.Like;
@@ -22,6 +23,7 @@ import dev.yoon.gridgetest.global.error.exception.ErrorCode;
 import dev.yoon.gridgetest.infra.file.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -87,7 +89,7 @@ public class BoardService {
 
         if (likeService.existsUser(board, user)) {
             likeService.deleteLike(board, user);
-        }else {
+        } else {
             Like like = Like.createLike(board, user);
             board.addLike(like);
 
@@ -126,6 +128,7 @@ public class BoardService {
 
     }
 
+    @Transactional
     public void reportBoard(ReportBoardReq request, String phone) {
 
         User user = userService.getUserByPhoneNumber(phone);
@@ -135,8 +138,34 @@ public class BoardService {
             throw new CantReportMySelfException(ErrorCode.CANT_REPORT_MYSELF);
         }
 
-        Report report = Report.createReport(ServiceType.BOARD, user, board.getId(), request.getReason());
+        Report report = Report.createReport(ServiceType.BOARD, user, board.getUser(), board.getId(), request.getReason());
         reportService.report(report);
+
+    }
+
+    @Transactional
+    public void deleteBoard(Long boardId, String phone) {
+
+        User user = userService.getUserByPhoneNumber(phone);
+        Board board = getBoardById(boardId);
+
+        if (user != board.getUser()) {
+            throw new AuthenticationException(ErrorCode.BOARD_USER_NOT_WRITER);
+        }
+        board.deleteBoard();
+
+    }
+
+    @Transactional
+    public void deleteBoardByAdmin(Long boardId) {
+        Board board = getBoardById(boardId);
+        boardRepository.delete(board);
+
+    }
+
+    public Page<Board> getAllBoardByQuery(Pageable pageable, GetBoardInfoDto.Request request) {
+
+        return boardRepository.findAllBoardByQuery(pageable, request);
 
     }
 }

@@ -85,7 +85,7 @@ public class AnswerApi {
 
     }
 
-    @PatchMapping("/answers/{answerId}")
+    @DeleteMapping("/answers/{answerId}")
     public ResponseEntity<Void> deleteAnswer(
             @PathVariable("answerId") Long answerId,
             @UserPhone String phone

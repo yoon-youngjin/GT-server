@@ -31,6 +31,7 @@ public class UserLoginService {
     private final RefreshTokenRedisService refreshTokenRedisService;
 
 
+    @Transactional
     public LoginDto.Response login(LoginDto.Request request) {
         User user = userService.getUserByNicknameOrPhone(request.getId());
 
@@ -38,12 +39,15 @@ public class UserLoginService {
             throw new LoginFailedException(ErrorCode.LOGIN_ERROR);
         }
 
+        user.updateLoginTime();
+
         TokenDto tokenDto = tokenManager.createTokenDto(user);
         saveRefreshToken(user, tokenDto);
         return LoginDto.Response.from(tokenDto);
 
     }
 
+    @Transactional
     public OauthLoginDto.Response loginOauth(String accessToken, OauthLoginDto.Request request) {
         OAuthAttributes oAuthAttributes = getSocialUserInfo(accessToken, UserType.from(request.getUserType()));
 
@@ -56,6 +60,7 @@ public class UserLoginService {
         }
         // 로그인
         else {
+            user.get().updateLoginTime();
             TokenDto tokenDto = tokenManager.createTokenDto(user.get());
             saveRefreshToken(user.get(), tokenDto);
             return OauthLoginDto.Response.from(tokenDto);
@@ -70,6 +75,7 @@ public class UserLoginService {
         User user = oAuthAttributes.toEntity(request);
         user = userService.register(user);
 
+        user.updateLoginTime();
         //JWT 생성
         TokenDto tokenDto = tokenManager.createTokenDto(user);
         saveRefreshToken(user, tokenDto);
@@ -85,6 +91,7 @@ public class UserLoginService {
 
     }
 
+    @Transactional
     private void saveRefreshToken(User user, TokenDto tokenDto) {
 
         RefreshToken refreshToken = RefreshToken.of(

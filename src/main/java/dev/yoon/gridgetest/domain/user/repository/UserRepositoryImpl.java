@@ -2,7 +2,7 @@ package dev.yoon.gridgetest.domain.user.repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import dev.yoon.gridgetest.domain.admin.dto.GetUserInfoDto;
+import dev.yoon.gridgetest.domain.admin.dto.users.GetUserInfoDto;
 import dev.yoon.gridgetest.domain.user.domain.User;
 import dev.yoon.gridgetest.domain.user.model.UserState;
 import dev.yoon.gridgetest.global.util.DateTimeUtils;
@@ -12,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import java.time.LocalDate;
 import java.util.List;
 
 import static dev.yoon.gridgetest.domain.user.domain.QUser.user;

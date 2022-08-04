@@ -2,10 +2,12 @@ package dev.yoon.gridgetest.domain.board.domain;
 
 import dev.yoon.gridgetest.domain.answer.domain.Answer;
 import dev.yoon.gridgetest.domain.base.BaseTimeEntity;
+import dev.yoon.gridgetest.domain.board.model.BoardState;
 import dev.yoon.gridgetest.domain.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -19,6 +21,7 @@ public class Board extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "board_id")
     private Long Id;
 
     @Lob
@@ -33,7 +36,8 @@ public class Board extends BaseTimeEntity {
 
     @OneToMany(
             mappedBy = "board",
-            cascade = CascadeType.ALL
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
     )
     private final List<Answer> answers = new ArrayList<>();
 
@@ -52,12 +56,18 @@ public class Board extends BaseTimeEntity {
     )
     private final List<Like> likeList = new ArrayList<>();
 
-//    private Boolean isDeleted;
+    private Boolean isDeleted;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "board_state")
+    private BoardState boardState;
 
     @Builder
     public Board(String content, User user) {
         this.content = content;
         this.user = user;
+        this.isDeleted = false;
+        this.boardState = BoardState.ACTIVE;
     }
 
     public static Board createBoard(Board board, User user) {
@@ -76,6 +86,11 @@ public class Board extends BaseTimeEntity {
     public void addLike(Like like) {
         likeList.add(like);
         like.setBoard(this);
+    }
+
+    public void deleteBoard() {
+        this.isDeleted = true;
+        this.boardState = BoardState.DELETE;
     }
 
     public void updateContent(String content) {

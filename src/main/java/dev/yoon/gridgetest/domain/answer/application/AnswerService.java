@@ -110,7 +110,7 @@ public class AnswerService {
             throw new CantReportMySelfException(ErrorCode.CANT_REPORT_MYSELF);
         }
 
-        Report report = Report.createReport(ServiceType.BOARD, user, answer.getId(), request.getReason());
+        Report report = Report.createReport(ServiceType.BOARD, user, answer.getUser(), answer.getId(), request.getReason());
         reportService.report(report);
     }
 

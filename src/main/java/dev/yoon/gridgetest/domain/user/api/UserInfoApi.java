@@ -81,7 +81,7 @@ public class UserInfoApi {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/quit")
+    @DeleteMapping("/quit")
     public ResponseEntity<Void> quitUser(
             @UserPhone String phone
 

@@ -29,6 +29,8 @@ public class DateTimeUtils {
         return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyyMMdd"));
     }
 
+
+
     public static String convertToLocalDatetimeToTime(LocalDateTime localDateTime) {
         LocalDateTime now = LocalDateTime.now();
 

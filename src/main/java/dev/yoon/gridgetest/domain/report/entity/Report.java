@@ -17,7 +17,7 @@ public class Report extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long reportId;
+    private Long Id;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
@@ -29,6 +29,12 @@ public class Report extends BaseTimeEntity {
     @JoinColumn(name = "from_user_id", nullable = false)
     private User from;
 
+    @ManyToOne(
+            fetch = FetchType.LAZY
+    )
+    @JoinColumn(name = "to_user_id", nullable = false)
+    private User to;
+
     @Column(nullable = false, length = 20)
     private Long serviceId;
 
@@ -36,18 +42,20 @@ public class Report extends BaseTimeEntity {
     private String reason;
 
     @Builder
-    public Report(ServiceType serviceType, User from, Long serviceId, String reason) {
+    public Report(ServiceType serviceType, User from, User to, Long serviceId, String reason) {
         this.serviceType = serviceType;
         this.from = from;
+        this.to = to;
         this.serviceId = serviceId;
         this.reason = reason;
     }
 
-    public static Report createReport(ServiceType serviceType, User from, Long serviceId, String reason) {
+    public static Report createReport(ServiceType serviceType, User from, User to, Long serviceId, String reason) {
 
         return Report.builder()
                 .serviceType(serviceType)
                 .from(from)
+                .to(to)
                 .serviceId(serviceId)
                 .reason(reason)
                 .build();
