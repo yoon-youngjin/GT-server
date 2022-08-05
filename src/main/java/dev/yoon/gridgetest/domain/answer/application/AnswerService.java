@@ -2,33 +2,28 @@ package dev.yoon.gridgetest.domain.answer.application;
 
 import dev.yoon.gridgetest.domain.answer.domain.AnswerLike;
 import dev.yoon.gridgetest.domain.answer.dto.GetAnswerRes;
-import dev.yoon.gridgetest.domain.answer.dto.ReportAnswerReq;
 import dev.yoon.gridgetest.domain.board.application.BoardService;
 import dev.yoon.gridgetest.domain.answer.domain.Answer;
 import dev.yoon.gridgetest.domain.board.domain.Board;
 import dev.yoon.gridgetest.domain.answer.dto.CreateAnswerReq;
 import dev.yoon.gridgetest.domain.answer.dto.CreateReplyReq;
 import dev.yoon.gridgetest.domain.answer.repository.AnswerRepository;
-import dev.yoon.gridgetest.domain.board.domain.Like;
 import dev.yoon.gridgetest.domain.report.application.ReportService;
-import dev.yoon.gridgetest.domain.report.entity.Report;
-import dev.yoon.gridgetest.domain.report.exception.CantReportMySelfException;
-import dev.yoon.gridgetest.domain.report.model.ServiceType;
 import dev.yoon.gridgetest.domain.user.application.UserService;
 import dev.yoon.gridgetest.domain.user.domain.User;
 import dev.yoon.gridgetest.global.error.exception.AuthenticationException;
 import dev.yoon.gridgetest.global.error.exception.EntityNotFoundException;
 import dev.yoon.gridgetest.global.error.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.time.LocalDateTime;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 @Transactional(readOnly = true)
@@ -38,7 +33,6 @@ public class AnswerService {
     private final BoardService boardService;
     private final AnswerRepository answerRepository;
     private final AnswerLikeService answerLikeService;
-    private final ReportService reportService;
 
 
     @Transactional
@@ -51,6 +45,9 @@ public class AnswerService {
         Answer saveAnswer = Answer.createAnswer(user, board, answer);
 
         answerRepository.save(saveAnswer);
+
+        log.info("[댓글 생성]/" + user.getNickname().getValue() + "/" + LocalDateTime.now());
+
     }
 
     @Transactional
@@ -64,6 +61,7 @@ public class AnswerService {
         saveReply.setParent(answer);
 
         answerRepository.save(saveReply);
+        log.info("[대댓글 생성]/" + user.getNickname().getValue() + "/" + LocalDateTime.now());
 
     }
 
@@ -73,6 +71,7 @@ public class AnswerService {
         Board board = boardService.getBoardById(boardId);
 
         Slice<Answer> answers = answerRepository.findAnswersByBoard(pageable, user, board);
+        log.info("[댓글 조회]/" + user.getNickname().getValue() + "/" + LocalDateTime.now());
 
         return GetAnswerRes.of(board, answers, user, pageable);
 
@@ -86,11 +85,15 @@ public class AnswerService {
 
         if (answerLikeService.existsUser(answer, user)) {
             answerLikeService.deleteLike(answer, user);
+            log.info("[댓글 좋아요 취소]/" + user.getNickname().getValue() + "/" + LocalDateTime.now());
+
         } else {
             AnswerLike answerLike = AnswerLike.createLike(answer, user);
             answer.addLike(answerLike);
 
             answerLikeService.addLike(answerLike);
+            log.info("[댓글 좋아요 추가]/" + user.getNickname().getValue() + "/" + LocalDateTime.now());
+
         }
 
     }
@@ -101,18 +104,7 @@ public class AnswerService {
 
     }
 
-    public void reportAnswer(ReportAnswerReq request, String phone) {
 
-        User user = userService.getUserByPhoneNumber(phone);
-        Answer answer = getAnswerById(request.getAnswerId());
-
-        if (user == answer.getUser()) {
-            throw new CantReportMySelfException(ErrorCode.CANT_REPORT_MYSELF);
-        }
-
-        Report report = Report.createReport(ServiceType.BOARD, user, answer.getUser(), answer.getId(), request.getReason());
-        reportService.report(report);
-    }
 
     public void deleteAnswer(Long answerId, String phone) {
 
@@ -124,6 +116,7 @@ public class AnswerService {
         }
 
         answerRepository.delete(answer);
+        log.info("[댓글 삭제]/" + user.getNickname().getValue() + "/" + LocalDateTime.now());
 
     }
 }

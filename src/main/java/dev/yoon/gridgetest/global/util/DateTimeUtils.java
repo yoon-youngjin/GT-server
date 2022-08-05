@@ -17,7 +17,6 @@ public class DateTimeUtils {
     private static final int MIN = 60;
     private static final int HOUR = 24;
     private static final int DAY = 30;
-    private static final int MONTH = 12;
 
     public static LocalDateTime convertToLocalDateTime(Date dateToConvert) {
         return dateToConvert.toInstant()
@@ -37,27 +36,21 @@ public class DateTimeUtils {
         long diffTime = localDateTime.until(now, ChronoUnit.SECONDS);
 
         if (diffTime < SEC) {
-            return "방금";
+            return "1초";
         }
         diffTime = diffTime / SEC;
         if (diffTime < MIN) {
-            return diffTime + "분 전";
+            return diffTime + "분";
         }
         diffTime = diffTime / MIN;
         if (diffTime < HOUR) {
-            return diffTime + "시간 전";
+            return diffTime + "시간";
         }
         diffTime = diffTime / HOUR;
         if (diffTime < DAY) {
-            return diffTime + "일 전";
+            return diffTime + "일";
         }
-        diffTime = diffTime / DAY;
-        if (diffTime < MONTH) {
-            return diffTime + "개월 전";
-        }
-
-        diffTime = diffTime / MONTH;
-        return diffTime + "년 전";
+        return localDateTime.getMonth() + "월" + localDateTime.getDayOfMonth() + "일";
 
     }
 

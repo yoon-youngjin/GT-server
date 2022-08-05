@@ -1,8 +1,8 @@
-package dev.yoon.gridgetest.domain.jwt.application;
+package dev.yoon.gridgetest.global.jwt.application;
 
-import dev.yoon.gridgetest.domain.jwt.constant.GrantType;
-import dev.yoon.gridgetest.domain.jwt.constant.TokenType;
-import dev.yoon.gridgetest.domain.jwt.dto.TokenDto;
+import dev.yoon.gridgetest.global.jwt.constant.GrantType;
+import dev.yoon.gridgetest.global.jwt.constant.TokenType;
+import dev.yoon.gridgetest.global.jwt.dto.TokenDto;
 import dev.yoon.gridgetest.domain.user.domain.User;
 import dev.yoon.gridgetest.domain.user.exception.NotValidTokenException;
 import dev.yoon.gridgetest.global.error.exception.ErrorCode;

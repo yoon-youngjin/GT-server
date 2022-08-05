@@ -1,6 +1,6 @@
 package dev.yoon.gridgetest.global.validator;
 
-import dev.yoon.gridgetest.domain.jwt.constant.GrantType;
+import dev.yoon.gridgetest.global.jwt.constant.GrantType;
 import dev.yoon.gridgetest.domain.user.model.UserType;
 import dev.yoon.gridgetest.global.error.exception.AuthenticationException;
 import dev.yoon.gridgetest.global.error.exception.ErrorCode;
@@ -33,9 +33,5 @@ public class TokenValidator {
         }
     }
 
-    public void validateRefreshTokenExpirationTime(LocalDateTime refreshTokenExpirationTime, LocalDateTime now) {
-        if(refreshTokenExpirationTime.isBefore(now)) {
-            throw new AuthenticationException(ErrorCode.REFRESH_TOKEN_EXPIRED);
-        }
-    }
+
 }

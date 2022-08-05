@@ -33,8 +33,10 @@ public class WebConfig implements WebMvcConfigurer {
 
         registry.addInterceptor(authenticationInterceptor)
                 .order(1)
-                .excludePathPatterns("/api/users/login", "/api/users/oauth/login", "/api/users/oauth/sign-up", "/api/users/sign-up", "/api/sms/send",
-                        "/api/duplicated/nickname", "/api/sms/auth", "/api/health", "/api/token/reissue") // 해당 경로는 인터셉터가 가로채지 않는다.
+                .excludePathPatterns("/api/users/login", "/api/users/oauth/login", "/api/users/auto-login",
+                        "/api/users/oauth/sign-up", "/api/users/sign-up", "/api/users/sms/send",
+                        "/api/users/duplicated/nickname", "/api/users/duplicated/phone",
+                        "/api/users/sms/auth", "/api/health", "/api/token/reissue")
                 .addPathPatterns("/api/**");
 
         registry.addInterceptor(adminAuthorizationInterceptor)

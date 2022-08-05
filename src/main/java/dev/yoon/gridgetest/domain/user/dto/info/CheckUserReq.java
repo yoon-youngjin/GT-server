@@ -16,6 +16,4 @@ public class CheckUserReq {
     @Length(min = 1, max = 11, message = "최대 11자리까지 입력할 수 있습니다")
     private String phone;
 
-
-
 }

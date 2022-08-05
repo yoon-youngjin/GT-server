@@ -1,17 +1,16 @@
 package dev.yoon.gridgetest.domain.follow.dto;
 
-import dev.yoon.gridgetest.domain.board.domain.Board;
-import dev.yoon.gridgetest.domain.board.dto.GetMainBoardRes;
+import dev.yoon.gridgetest.domain.follow.domain.Follow;
 import dev.yoon.gridgetest.domain.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotNull;
-
 @Getter
 @Setter
 public class GetRequestFollowRes {
+
+    private Long followId;
 
     private Long userId;
 
@@ -20,18 +19,20 @@ public class GetRequestFollowRes {
     private String nickname;
 
     @Builder
-    public GetRequestFollowRes(Long userId, String profileUrl, String nickname) {
+    public GetRequestFollowRes(Long followId, Long userId, String profileUrl, String nickname) {
+        this.followId = followId;
         this.userId = userId;
         this.profileUrl = profileUrl;
         this.nickname = nickname;
     }
 
-    public static GetRequestFollowRes from(User user) {
+    public static GetRequestFollowRes from(Follow follow) {
 
         return GetRequestFollowRes.builder()
-                .userId(user.getId())
-                .nickname(user.getNickname().getValue())
-                .profileUrl(user.getProfileUrl())
+                .followId(follow.getId())
+                .userId(follow.getFrom().getId())
+                .nickname(follow.getTo().getNickname().getValue())
+                .profileUrl(follow.getFrom().getProfileUrl())
                 .build();
     }
 }

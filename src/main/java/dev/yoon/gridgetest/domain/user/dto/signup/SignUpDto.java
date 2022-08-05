@@ -1,7 +1,7 @@
 package dev.yoon.gridgetest.domain.user.dto.signup;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import dev.yoon.gridgetest.domain.jwt.dto.TokenDto;
+import dev.yoon.gridgetest.global.jwt.dto.TokenDto;
 import dev.yoon.gridgetest.domain.user.domain.User;
 import dev.yoon.gridgetest.domain.user.model.*;
 import dev.yoon.gridgetest.global.util.DateTimeUtils;

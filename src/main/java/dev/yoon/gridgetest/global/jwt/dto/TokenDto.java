@@ -1,4 +1,4 @@
-package dev.yoon.gridgetest.domain.jwt.dto;
+package dev.yoon.gridgetest.global.jwt.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;

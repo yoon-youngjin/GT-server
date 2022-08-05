@@ -1,15 +1,17 @@
 package dev.yoon.gridgetest.domain.user.api;
 
 import dev.yoon.gridgetest.domain.user.application.signup.UserJoinService;
-import dev.yoon.gridgetest.domain.user.dto.signup.NicknameCheckReq;
-import dev.yoon.gridgetest.domain.user.dto.signup.SendSmsAuthReq;
-import dev.yoon.gridgetest.domain.user.dto.signup.SendSmsReq;
-import dev.yoon.gridgetest.domain.user.dto.signup.SignUpDto;
+import dev.yoon.gridgetest.domain.user.dto.signup.*;
+import dev.yoon.gridgetest.domain.user.model.Nickname;
+import dev.yoon.gridgetest.global.ApiResult;
+import dev.yoon.gridgetest.global.util.ApiUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import static dev.yoon.gridgetest.global.util.Constants.*;
 
 
 @RestController
@@ -20,41 +22,47 @@ public class UserSignUpApi {
     private final UserJoinService userJoinService;
 
     @PostMapping("/sign-up")
-    public ResponseEntity<SignUpDto.Response> signUp(
+    public ResponseEntity<ApiResult<SignUpDto.Response>> signUp(
             @RequestBody @Valid SignUpDto.Request signUpDto
     ) {
 
         SignUpDto.Response response = userJoinService.signUpUser(signUpDto);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(ApiUtils.success(response, SIGN_UP));
     }
 
     @PostMapping("/sms/send")
-    public ResponseEntity<Void> sendSms(
+    public ResponseEntity<ApiResult<Void>> sendSms(
             @RequestBody @Valid SendSmsReq request
     ) {
         userJoinService.sendSms(request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(ApiUtils.success(null, SEND_SMS));
     }
 
     @PostMapping("/sms/auth")
-    public ResponseEntity<Void> checkCode(
+    public ResponseEntity<ApiResult<Void>> checkCode(
             @RequestBody @Valid SendSmsAuthReq request
     ) {
 
         userJoinService.checkCode(request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(ApiUtils.success(null, CHECK_CODE));
 
     }
 
     @GetMapping("/duplicated/nickname")
-    public ResponseEntity<Void> checkNickname(
+    public ResponseEntity<ApiResult<Void>> checkNickname(
             @Valid NicknameCheckReq request
     ) {
         userJoinService.checkNickname(request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(ApiUtils.success(null, CHECK_NICKNAME));
     }
 
-    //TODO 전화번호 중복 체크
+    @GetMapping("/duplicated/phone")
+    public ResponseEntity<ApiResult<Void>> checkPhone(
+            @Valid PhoneCheckReq request
+    ) {
+        userJoinService.checkPhone(request);
+        return ResponseEntity.ok(ApiUtils.success(null, CHECK_PHONE));
+    }
 
 
 }

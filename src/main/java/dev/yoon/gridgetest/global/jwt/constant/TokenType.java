@@ -1,4 +1,4 @@
-package dev.yoon.gridgetest.domain.jwt.constant;
+package dev.yoon.gridgetest.global.jwt.constant;
 
 public enum TokenType {
 

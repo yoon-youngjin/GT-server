@@ -11,7 +11,6 @@ import dev.yoon.gridgetest.domain.board.dto.ReportBoardReq;
 import dev.yoon.gridgetest.domain.board.dto.UpdateBoardReq;
 import dev.yoon.gridgetest.domain.board.repository.BoardRepository;
 import dev.yoon.gridgetest.domain.report.application.ReportService;
-import dev.yoon.gridgetest.domain.report.dto.ReportServiceReq;
 import dev.yoon.gridgetest.domain.report.entity.Report;
 import dev.yoon.gridgetest.domain.report.exception.CantReportMySelfException;
 import dev.yoon.gridgetest.domain.report.model.ServiceType;
@@ -45,7 +44,6 @@ public class BoardService {
     private final UserService userService;
     private final BoardRepository boardRepository;
     private final LikeService likeService;
-    private final ReportService reportService;
 
     private final S3Uploader s3Uploader;
 
@@ -71,11 +69,10 @@ public class BoardService {
 
         });
 
-        log.info("[피드 생성] " + user.getNickname() + " " + LocalDateTime.now());
-
-
         // 글 저장
         boardRepository.save(saveBoard);
+
+        log.info("[피드 생성]/" + user.getNickname().getValue() + "/" + LocalDateTime.now());
 
     }
 
@@ -84,6 +81,7 @@ public class BoardService {
         // 유저 조회
         User user = userService.getUserByPhoneNumber(phone);
 
+        log.info("[피드 조회]/" + user.getNickname().getValue() + "/" + LocalDateTime.now());
         return boardRepository.findMainBoard(pageable, user);
     }
 
@@ -95,12 +93,15 @@ public class BoardService {
         User user = userService.getUserByPhoneNumber(phone);
 
         if (likeService.existsUser(board, user)) {
+
             likeService.deleteLike(board, user);
+            log.info("[피드 좋아요 취소]/" + user.getNickname().getValue() + "/" + LocalDateTime.now());
         } else {
             Like like = Like.createLike(board, user);
             board.addLike(like);
-
             likeService.addLike(like);
+            log.info("[피드 좋아요 추가]/" + user.getNickname().getValue() + "/" + LocalDateTime.now());
+
         }
     }
 
@@ -115,8 +116,10 @@ public class BoardService {
         return boardRepository.countBoardByUser(user);
     }
 
-    public List<Board> getBoardByUser(User user) {
-        return boardRepository.findAllByUser(user);
+
+    public Slice<Board> getBoardByUser(Pageable pageable,User user) {
+
+        return boardRepository.findAllByUser(pageable, user);
 
     }
 
@@ -131,24 +134,13 @@ public class BoardService {
             throw new AuthenticationException(ErrorCode.BOARD_USER_NOT_WRITER);
         }
 
+
         board.updateContent(request.getContent());
+        log.info("[피드 수정]/" + user.getNickname().getValue() + "/" + LocalDateTime.now());
 
     }
 
-    @Transactional
-    public void reportBoard(ReportBoardReq request, String phone) {
 
-        User user = userService.getUserByPhoneNumber(phone);
-        Board board = getBoardById(request.getBoardId());
-
-        if (user == board.getUser()) {
-            throw new CantReportMySelfException(ErrorCode.CANT_REPORT_MYSELF);
-        }
-
-        Report report = Report.createReport(ServiceType.BOARD, user, board.getUser(), board.getId(), request.getReason());
-        reportService.report(report);
-
-    }
 
     @Transactional
     public void deleteBoard(Long boardId, String phone) {
@@ -160,18 +152,18 @@ public class BoardService {
             throw new AuthenticationException(ErrorCode.BOARD_USER_NOT_WRITER);
         }
         board.deleteBoard();
+        log.info("[피드 삭제]/" + user.getNickname().getValue() + "/" + LocalDateTime.now());
 
     }
 
     @Transactional
     public void deleteBoardByAdmin(Long boardId) {
         Board board = getBoardById(boardId);
-        boardRepository.delete(board);
+        board.deleteBoard();
 
     }
 
     public Page<Board> getAllBoardByQuery(Pageable pageable, GetBoardInfoDto.Request request) {
-
         return boardRepository.findAllBoardByQuery(pageable, request);
 
     }

@@ -1,6 +1,6 @@
 package dev.yoon.gridgetest.domain.user.application.login.kakao;
 
-import dev.yoon.gridgetest.domain.jwt.constant.GrantType;
+import dev.yoon.gridgetest.global.jwt.constant.GrantType;
 import dev.yoon.gridgetest.domain.user.application.login.SocialLoginApiService;
 import dev.yoon.gridgetest.domain.user.dto.login.OAuthAttributes;
 import dev.yoon.gridgetest.domain.user.model.UserType;
@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 @Slf4j
 @Service

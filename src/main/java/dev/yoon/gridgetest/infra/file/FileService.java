@@ -1,5 +1,6 @@
 package dev.yoon.gridgetest.infra.file;
 
+import dev.yoon.gridgetest.domain.report.model.ServiceType;
 import dev.yoon.gridgetest.global.error.exception.BusinessException;
 import dev.yoon.gridgetest.global.error.exception.ErrorCode;
 import org.springframework.data.domain.Page;
@@ -15,9 +16,9 @@ import java.util.stream.Collectors;
 @Component
 public class FileService {
 
-    public Page<String> getLog(Pageable pageable) {
+    public Page<String> getLog(Pageable pageable, ServiceType serviceType) {
 
-        File[] fileList = new File("./log/user").listFiles();
+        File[] fileList = new File("./log/" + serviceType.getValue()).listFiles();
         List<String> contents = new ArrayList<>();
         int totalSize = 0;
 
@@ -28,14 +29,10 @@ public class FileService {
                     totalSize++;
                     contents.add(temp.split(" - ")[1].trim());
                 }
-            } catch (FileNotFoundException e) {
-                throw new BusinessException(ErrorCode.AUTH_CODE_NOT_FOUND);
-
             } catch (IOException e) {
-                throw new BusinessException(ErrorCode.AUTH_CODE_NOT_FOUND);
+                throw new BusinessException(ErrorCode.FILE_IO);
             }
         }
-
 
         List<String> results = contents.stream()
                 .skip(pageable.getPageNumber() * pageable.getPageSize())

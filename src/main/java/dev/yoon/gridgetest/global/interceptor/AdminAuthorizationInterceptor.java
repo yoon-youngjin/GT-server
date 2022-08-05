@@ -1,7 +1,7 @@
 package dev.yoon.gridgetest.global.interceptor;
 
 
-import dev.yoon.gridgetest.domain.jwt.application.TokenManager;
+import dev.yoon.gridgetest.global.jwt.application.TokenManager;
 import dev.yoon.gridgetest.domain.user.model.Role;
 import dev.yoon.gridgetest.global.error.exception.ErrorCode;
 import dev.yoon.gridgetest.global.error.exception.ForbiddenException;

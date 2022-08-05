@@ -1,6 +1,6 @@
 package dev.yoon.gridgetest.global.resolver;
 
-import dev.yoon.gridgetest.domain.jwt.application.TokenManager;
+import dev.yoon.gridgetest.global.jwt.application.TokenManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;

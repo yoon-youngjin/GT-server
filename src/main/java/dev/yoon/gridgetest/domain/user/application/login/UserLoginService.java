@@ -1,20 +1,21 @@
 package dev.yoon.gridgetest.domain.user.application.login;
 
-import dev.yoon.gridgetest.domain.jwt.application.RefreshTokenRedisService;
-import dev.yoon.gridgetest.domain.jwt.application.TokenManager;
-import dev.yoon.gridgetest.domain.jwt.dto.TokenDto;
-import dev.yoon.gridgetest.domain.jwt.entity.RefreshToken;
+import dev.yoon.gridgetest.global.jwt.application.RefreshTokenRedisService;
+import dev.yoon.gridgetest.global.jwt.application.TokenManager;
+import dev.yoon.gridgetest.global.jwt.dto.TokenDto;
+import dev.yoon.gridgetest.global.jwt.entity.RefreshToken;
 import dev.yoon.gridgetest.domain.user.application.UserService;
 import dev.yoon.gridgetest.domain.user.domain.User;
 import dev.yoon.gridgetest.domain.user.dto.login.LoginDto;
 import dev.yoon.gridgetest.domain.user.dto.login.OAuthAttributes;
 import dev.yoon.gridgetest.domain.user.dto.login.OauthLoginDto;
 import dev.yoon.gridgetest.domain.user.dto.login.OauthSignUpDto;
-import dev.yoon.gridgetest.domain.user.dto.signup.SignUpDto;
 import dev.yoon.gridgetest.domain.user.exception.LoginFailedException;
 import dev.yoon.gridgetest.domain.user.model.UserType;
 import dev.yoon.gridgetest.global.error.exception.BusinessException;
 import dev.yoon.gridgetest.global.error.exception.ErrorCode;
+import dev.yoon.gridgetest.global.util.DateTimeUtils;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,10 @@ public class UserLoginService {
     @Transactional
     public LoginDto.Response login(LoginDto.Request request) {
         User user = userService.getUserByNicknameOrPhone(request.getId());
+
+        if (user.getIsDeleted()) {
+            throw new LoginFailedException(ErrorCode.QUIT_USER);
+        }
 
         if (!user.getPassword().isMatches(request.getPassword())) {
             throw new LoginFailedException(ErrorCode.LOGIN_ERROR);
@@ -65,6 +70,10 @@ public class UserLoginService {
         }
         // 로그인
         else {
+            if (user.get().getIsDeleted()) {
+                throw new LoginFailedException(ErrorCode.QUIT_USER);
+            }
+
             user.get().updateLoginTime();
             TokenDto tokenDto = tokenManager.createTokenDto(user.get());
             saveRefreshToken(user.get(), tokenDto);
@@ -111,4 +120,32 @@ public class UserLoginService {
         refreshTokenRedisService.saveRefreshToken(refreshToken);
     }
 
+    //TODO 레디스 좀 더 알아보기
+
+    public LoginDto.Response autoLogin(String refreshToken) {
+        Claims tokenClaims = tokenManager.getTokenClaims(refreshToken);
+
+        String phone = tokenClaims.getAudience();
+
+        RefreshToken refreshTokenByPhone = refreshTokenRedisService.getRefreshTokenByPhone(phone);
+        refreshTokenRedisService.validateRefreshTokenExpirationTime(
+                DateTimeUtils.convertToLocalDateTime(refreshTokenByPhone.getExpiration()), LocalDateTime.now()
+        );
+
+        User user = userService.getUserByPhoneNumber(phone);
+
+        if (user.getIsDeleted()) {
+            throw new LoginFailedException(ErrorCode.QUIT_USER);
+        }
+
+        user.updateLoginTime();
+
+        TokenDto tokenDto = tokenManager.createTokenDto(user);
+        saveRefreshToken(user, tokenDto);
+
+        log.info("[유저 자동 로그인]/" + user.getNickname().getValue() + "/" + LocalDateTime.now());
+
+        return LoginDto.Response.from(tokenDto);
+
+    }
 }

@@ -5,12 +5,15 @@ import dev.yoon.gridgetest.domain.board.domain.Board;
 import dev.yoon.gridgetest.domain.user.application.UserService;
 import dev.yoon.gridgetest.domain.user.domain.User;
 import dev.yoon.gridgetest.domain.user.dto.activity.GetUserBoardRes;
-import dev.yoon.gridgetest.domain.user.dto.info.GetUserInfoRes;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,12 +24,12 @@ public class UserActivityService {
     private final UserService userService;
     private final BoardService boardService;
 
-    public List<GetUserBoardRes> getUserBoard(String phone) {
+    public Slice<GetUserBoardRes> getUserBoard(Pageable pageable, String phone) {
 
         User user = userService.getUserByPhoneNumber(phone);
-        List<Board> boards = boardService.getBoardByUser(user);
-
-        return boards.stream().map(GetUserBoardRes::from).collect(Collectors.toList());
+        Slice<Board> boards = boardService.getBoardByUser(pageable, user);
+        List<GetUserBoardRes> results = boards.stream().map(GetUserBoardRes::from).collect(Collectors.toList());
+        return new SliceImpl<>(results, pageable, boards.hasNext());
 
     }
 

@@ -9,6 +9,7 @@ public enum ErrorCode {
     ALREADY_REGISTERED_USER(400, "이미 가입된 회원 입니다."),
     MISMATCHED_PASSWORD(401, "패스워드가 일치하지 않습니다."),
     LOGIN_ERROR(401, "비밀번호를 잘못 입력하셨습니다."),
+    QUIT_USER(401,"탈퇴한 회원입니다."),
     DUPLICATE_PHONE_NUMBER(400, "이미 사용 중인 전화번호입니다."),
     DUPLICATE_NICKNAME(400, "이미 사용 중인 닉네임입니다."),
     DUPLICATE_KEYWORD(400, "중복된 키워드가 포함되어 있습니다."),
@@ -41,18 +42,12 @@ public enum ErrorCode {
     REPLY_USER_NOT_WRITER(403, "해당 답변의 댓글에 대한 작성자가 아닙니다."),
     USER_NOT_WRITER(403, "해당 글에 대한 작성자가 아닙니다." ),
 
-    // 알림
-    NOTIFICATION_NOT_FOUND(401, "해당 알림을 찾을 수 없습니다."),
-    NOTIFICATION_FAILED(400, "알림 전송에 실패하였습니다."),
-
     PROCEED_WITH_SIGNUP(300, "회원가입을 진행해주세요."),
 
-    // Board
+    // 피드
     BOARD_NOT_FOUND(401, "해당 글을 찾을 수 없습니다."),
     BOARD_USER_NOT_WRITER(403, "해당 글에 대한 작성자가 아닙니다." ),
-    COMMUNITY_ANSWER_NOT_FOUND(401, "해당 답변을 찾을 수 없습니다." ),
     LIKE_NOT_FOUND(401, "해당 좋아요를 찾을 수 없습니다."),
-    SAVE_COMMUNITY_NOT_FOUND(401, "저장된 커뮤니티 글을 찾을 수 없습니다."),
 
     // 신고
     CANT_REPORT_MYSELF(400, "자신의 게시물은 신고할 수 없습니다."),
@@ -65,11 +60,16 @@ public enum ErrorCode {
     CANT_CHANGE_2_WEEKS(400, "2주 이내에 비밀번호를 2번까지 변경할 수 있습니다."),
 
     FAILED_TO_SEND_SMS(400, "문자 전송에 실패했습니다."),
-    // follow
+
+    // 팔로우
     FOLLOW_NOT_FOUND(400, "해당 팔로우를 찾을 수 없습니다."),
+    EXISTS_FOLLOW(400, "이미 팔로우가 존재합니다."),
 
     // 인가
-    FORBIDDEN_ADMIN(403, "관리자 권한이 없습니다.");
+    FORBIDDEN_ADMIN(403, "관리자 권한이 없습니다."),
+
+    // 파일
+    FILE_IO(400, "파일 처리를 실패했습니다.");
 
 
 

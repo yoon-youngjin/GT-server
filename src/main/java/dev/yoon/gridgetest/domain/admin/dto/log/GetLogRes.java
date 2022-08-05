@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class GetUserLogRes {
+public class GetLogRes {
 
 
     private String content;
@@ -17,7 +17,7 @@ public class GetUserLogRes {
     private String loggingTime;
 
     @Builder
-    public GetUserLogRes(String content, String nickname, String loggingTime) {
+    public GetLogRes(String content, String nickname, String loggingTime) {
 
         this.content = content;
         this.nickname = nickname;
@@ -25,10 +25,10 @@ public class GetUserLogRes {
     }
 
 
-    public static GetUserLogRes from(String log) {
+    public static GetLogRes from(String log) {
         String[] logs = log.split("/");
 
-        return GetUserLogRes.builder()
+        return GetLogRes.builder()
                 .content(logs[0])
                 .nickname(logs[1])
                 .loggingTime(logs[2])

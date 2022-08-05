@@ -3,6 +3,7 @@ package dev.yoon.gridgetest.domain.user.application;
 import dev.yoon.gridgetest.domain.user.model.Email;
 import dev.yoon.gridgetest.domain.user.domain.User;
 import dev.yoon.gridgetest.domain.user.model.Nickname;
+import dev.yoon.gridgetest.domain.user.model.UserType;
 import dev.yoon.gridgetest.domain.user.repository.UserRepository;
 import dev.yoon.gridgetest.domain.user.validator.UserValidator;
 import dev.yoon.gridgetest.global.error.exception.EntityNotFoundException;
@@ -41,20 +42,20 @@ public class UserService {
     }
 
     public User getUserById(Long userId) {
-        return userRepository.findById(userId)
+        return userRepository.findByIdAndIsDeletedFalse(userId)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.USER_NOT_FOUND));
-    }
-
-    public Boolean existsUser(String phone) {
-        return userRepository.existsByPhoneNumber(phone);
     }
 
     public void existsUserByNickname(String nickname) {
         userValidator.validateDuplicateNickname(nickname);
     }
 
+    public void existsUserByPhone(String phone) {
+        userValidator.validateDuplicatePhoneNumber(phone);
+    }
+
     public User getUserByNicknameOrPhone(String id) {
-        return userRepository.findByNicknameValueOrPhoneNumber(id, id)
+        return userRepository.findByNicknameValueOrPhoneNumberAndUserType(id, id, UserType.GENERAL)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.USER_NOT_FOUND));
 
     }

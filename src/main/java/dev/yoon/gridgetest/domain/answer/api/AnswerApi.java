@@ -4,8 +4,9 @@ import dev.yoon.gridgetest.domain.answer.application.AnswerService;
 import dev.yoon.gridgetest.domain.answer.dto.CreateAnswerReq;
 import dev.yoon.gridgetest.domain.answer.dto.CreateReplyReq;
 import dev.yoon.gridgetest.domain.answer.dto.GetAnswerRes;
-import dev.yoon.gridgetest.domain.answer.dto.ReportAnswerReq;
+import dev.yoon.gridgetest.global.ApiResult;
 import dev.yoon.gridgetest.global.resolver.UserPhone;
+import dev.yoon.gridgetest.global.util.ApiUtils;
 import dev.yoon.gridgetest.global.util.Constants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -16,28 +17,28 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Optional;
 
+import static dev.yoon.gridgetest.global.util.Constants.*;
+
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/boards")
+@RequestMapping("/api/board")
 public class AnswerApi {
 
     private final AnswerService answerService;
 
-
-    @PostMapping("/{boardId}/answers")
-    public ResponseEntity<Void> createAnswer(
+    @PostMapping("/{boardId}/answer")
+    public ResponseEntity<ApiResult<Void>> createAnswer(
             @PathVariable Long boardId,
             @RequestBody @Valid CreateAnswerReq request,
             @UserPhone String phone
     ) {
-
         answerService.createAnswer(boardId, request, phone);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(ApiUtils.success(null, CREATE_ANSWER));
 
     }
 
-    @GetMapping("/{boardId}/answers")
-    public ResponseEntity<GetAnswerRes> getAnswer(
+    @GetMapping("/{boardId}/answer")
+    public ResponseEntity<ApiResult<GetAnswerRes>> getAnswer(
             @PathVariable Long boardId,
             @UserPhone String phone,
             Optional<Integer> page
@@ -45,57 +46,46 @@ public class AnswerApi {
     ) {
 
         Pageable pageable = PageRequest.of(
-                page.isPresent() ? page.get() : 0,
+                page.orElse(0),
                 Constants.SET_PAGE_ITEM_MAX_COUNT
         );
 
         GetAnswerRes response = answerService.getAnswerByBoard(pageable, phone, boardId);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(ApiUtils.success(response, GET_ANSWER));
 
     }
 
-    @PostMapping("/answers/{answerId}/reply")
-    public ResponseEntity<Void> createReply(
+    @PostMapping("/answer/{answerId}/reply")
+    public ResponseEntity<ApiResult<Void>> createReply(
             @PathVariable Long answerId,
             @RequestBody @Valid CreateReplyReq request,
             @UserPhone String phone
     ) {
         answerService.createReply(answerId, request, phone);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(ApiUtils.success(null, CREATE_REPLY));
 
     }
 
-    @PostMapping("/answers/{answerId}/like")
-    public ResponseEntity<Void> addOrDeleteLike(
+    @PostMapping("/answer/{answerId}/like")
+    public ResponseEntity<ApiResult<Void>> addOrDeleteLike(
             @PathVariable Long answerId,
             @UserPhone String phone
     ) {
 
         answerService.addOrDeleteLike(answerId, phone);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(ApiUtils.success(null, ADD_OR_DELETE_LIKE));
     }
 
-    @PostMapping("/answers/report")
-    public ResponseEntity<Void> reportAnswer(
-            @RequestBody @Valid ReportAnswerReq request,
-            @UserPhone String phone
-    ) {
-        answerService.reportAnswer(request, phone);
-        return ResponseEntity.ok().build();
 
-    }
 
-    @DeleteMapping("/answers/{answerId}")
-    public ResponseEntity<Void> deleteAnswer(
+    @DeleteMapping("/answer/{answerId}")
+    public ResponseEntity<ApiResult<Void>> deleteAnswer(
             @PathVariable("answerId") Long answerId,
             @UserPhone String phone
     ){
         answerService.deleteAnswer(answerId, phone);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(ApiUtils.success(null, DELETE_ANSWER));
     }
-
-
-
 
 
 

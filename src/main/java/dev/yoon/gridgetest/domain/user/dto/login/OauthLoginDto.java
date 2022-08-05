@@ -1,9 +1,8 @@
 package dev.yoon.gridgetest.domain.user.dto.login;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import dev.yoon.gridgetest.domain.jwt.dto.TokenDto;
+import dev.yoon.gridgetest.global.jwt.dto.TokenDto;
 import lombok.*;
-import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 import java.util.Date;

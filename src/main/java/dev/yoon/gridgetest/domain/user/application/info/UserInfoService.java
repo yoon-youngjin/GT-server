@@ -8,7 +8,6 @@ import dev.yoon.gridgetest.domain.user.domain.User;
 import dev.yoon.gridgetest.domain.user.dto.info.*;
 import dev.yoon.gridgetest.domain.user.exception.NotEqualsCheckPasswordException;
 import dev.yoon.gridgetest.domain.user.exception.NotEqualsPhoneException;
-import dev.yoon.gridgetest.domain.user.model.Nickname;
 import dev.yoon.gridgetest.domain.user.repository.UserRepository;
 import dev.yoon.gridgetest.domain.user.validator.UserValidator;
 import dev.yoon.gridgetest.global.error.exception.ErrorCode;
@@ -80,7 +79,7 @@ public class UserInfoService {
     }
 
 
-    public void checkUser(CheckUserReq request, String phone) {
+    public void checkUserByPhone(CheckUserReq request, String phone) {
 
         if (!request.getPhone().equals(phone)) {
             throw new NotEqualsPhoneException(ErrorCode.NOT_EQUALS_PHONE);
@@ -88,19 +87,25 @@ public class UserInfoService {
 
     }
 
-    public void checkUpdateName(String phone) {
+    public void checkUpdateTimeName(CheckUpdateNameReq request, String phone) {
         User user = userService.getUserByPhoneNumber(phone);
-        user.getName().isValidUpdate();
+
+        if (!user.getName().getValue().equals(request.getName())) {
+            user.getName().isValidUpdate();
+        }
     }
 
-    public void checkUpdateNickname(CheckUpdateNicknameReq request, String phone) {
+    public void checkUpdateTimeNickname(CheckUpdateNicknameReq request, String phone) {
         User user = userService.getUserByPhoneNumber(phone);
 
-        // 2주 이내에 2번 닉네임을 변경하였는지 검사
-        user.getNickname().isValidUpdate();
+        if (!user.getNickname().getValue().equals(request.getNickname())) {
+            // 2주 이내에 2번 닉네임을 변경하였는지 검사
+            user.getNickname().isValidUpdate();
 
-        // 닉네임 중복 검사
-        userValidator.validateDuplicateNickname(request.getNickname());
+            // 닉네임 중복 검사
+            userValidator.validateDuplicateNickname(request.getNickname());
+        }
+
 
     }
 

@@ -1,0 +1,3 @@
+[2022-08-06 02:11:38:48073] [32m[http-nio-8080-exec-3][0;39m [34mINFO [0;39m [1;37m[dev.yoon.gridgetest.domain.board.application.BoardService.createBoard:[33m75[0;39m][0;39m - [피드 생성]/yoon/2022-08-06T02:11:38.431369300
+[2022-08-06 02:11:44:54339] [32m[http-nio-8080-exec-5][0;39m [34mINFO [0;39m [1;37m[dev.yoon.gridgetest.domain.board.application.BoardService.getMainBoardList:[33m84[0;39m][0;39m - [피드 조회]/yoon/2022-08-06T02:11:44.697881100
+[2022-08-06 02:12:02:72023] [32m[http-nio-8080-exec-7][0;39m [34mINFO [0;39m [1;37m[dev.yoon.gridgetest.domain.board.application.BoardService.deleteBoard:[33m155[0;39m][0;39m - [피드 삭제]/yoon/2022-08-06T02:12:02.381554400

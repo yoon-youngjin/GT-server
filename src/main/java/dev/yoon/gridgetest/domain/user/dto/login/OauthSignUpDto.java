@@ -1,7 +1,7 @@
 package dev.yoon.gridgetest.domain.user.dto.login;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import dev.yoon.gridgetest.domain.jwt.dto.TokenDto;
+import dev.yoon.gridgetest.global.jwt.dto.TokenDto;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
@@ -23,7 +23,7 @@ public class OauthSignUpDto {
         private String phone;
 
         @NotBlank(message = "이름은 필수값 입니다.")
-        @Length(min = 1, max = 20, message = "최대 20자리까지 입력할 수 있습니다")
+        @Pattern(regexp = "[a-z0-9_.]{1,20}", message = "이름은 영문, 숫자, 특수문자('_', '.')을 포함하여 20자 이내로 가능합니다.")
         private String name;
 
         @NotBlank(message = "생년월일을 필수값 입니다.")
@@ -31,7 +31,7 @@ public class OauthSignUpDto {
         private String birth;
 
         @NotBlank(message = "닉네임은 필수값 입니다.")
-        @Length(min = 1, max = 20, message = "최대 20자리까지 입력할 수 있습니다")
+        @Pattern(regexp = "[a-z0-9_.]{1,20}", message = "이름은 영문, 숫자, 특수문자('_', '.')을 포함하여 20자 이내로 가능합니다.")
         private String nickname;
 
     }

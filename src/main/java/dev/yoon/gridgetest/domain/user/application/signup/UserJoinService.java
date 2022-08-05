@@ -2,18 +2,13 @@ package dev.yoon.gridgetest.domain.user.application.signup;
 
 import dev.yoon.gridgetest.domain.authcode.application.AuthCodeService;
 import dev.yoon.gridgetest.domain.authcode.entity.AuthCode;
-import dev.yoon.gridgetest.domain.jwt.application.RefreshTokenRedisService;
-import dev.yoon.gridgetest.domain.jwt.application.TokenManager;
-import dev.yoon.gridgetest.domain.jwt.dto.TokenDto;
-import dev.yoon.gridgetest.domain.jwt.entity.RefreshToken;
+import dev.yoon.gridgetest.global.jwt.application.RefreshTokenRedisService;
+import dev.yoon.gridgetest.global.jwt.application.TokenManager;
+import dev.yoon.gridgetest.global.jwt.dto.TokenDto;
+import dev.yoon.gridgetest.global.jwt.entity.RefreshToken;
 import dev.yoon.gridgetest.domain.user.application.UserService;
 import dev.yoon.gridgetest.domain.user.domain.User;
-import dev.yoon.gridgetest.domain.user.dto.signup.NicknameCheckReq;
-import dev.yoon.gridgetest.domain.user.dto.signup.SendSmsAuthReq;
-import dev.yoon.gridgetest.domain.user.dto.signup.SendSmsReq;
-import dev.yoon.gridgetest.domain.user.dto.signup.SignUpDto;
-import dev.yoon.gridgetest.domain.user.model.Nickname;
-import dev.yoon.gridgetest.domain.user.validator.UserValidator;
+import dev.yoon.gridgetest.domain.user.dto.signup.*;
 import dev.yoon.gridgetest.infra.email.SmsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -75,5 +70,10 @@ public class UserJoinService {
                 tokenDto.getRefreshTokenExpireTime()
         );
         refreshTokenRedisService.saveRefreshToken(refreshToken);
+    }
+
+    public void checkPhone(PhoneCheckReq request) {
+        userService.existsUserByPhone(request.getPhone());
+
     }
 }

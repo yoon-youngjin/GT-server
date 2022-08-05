@@ -1,4 +1,4 @@
-package dev.yoon.gridgetest.domain.jwt.entity;
+package dev.yoon.gridgetest.global.jwt.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

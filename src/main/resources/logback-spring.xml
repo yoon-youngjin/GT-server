@@ -25,7 +25,7 @@
     </appender>
 
     <appender name="FILE-USER" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>./log/user/user-${BY_DATE}.log</file>
+        <file>./log/users/user-${BY_DATE}.log</file>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>INFO</level>
             <onMatch>ACCEPT</onMatch>
@@ -36,6 +36,60 @@
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>./backup/user/user-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="FILE-BOARD" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>./log/board/board-${BY_DATE}.log</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>./backup/board/board-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="FILE-ANSWER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>./log/answer/answer-${BY_DATE}.log</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>./backup/answer/answer-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="FILE-REPORT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>./log/report/report-${BY_DATE}.log</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>./backup/report/report-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxFileSize>100MB</maxFileSize>
             <maxHistory>30</maxHistory>
             <totalSizeCap>1GB</totalSizeCap>
@@ -57,19 +111,17 @@
         <appender-ref ref="FILE-USER"/>
     </logger>
 
+    <logger name="dev.yoon.gridgetest.domain.board" level="INFO">
+        <appender-ref ref="FILE-BOARD"/>
+    </logger>
 
-<!--    <logger name="dev.yoon.gridgetest.domain.report" level="WARN">-->
-<!--        <appender-ref ref="APP_FILE"/>-->
-<!--        <appender-ref ref="ERROR_FILE"/>-->
-<!--    </logger>-->
+    <logger name="dev.yoon.gridgetest.domain.answer" level="INFO">
+        <appender-ref ref="FILE-ANSWER"/>
+    </logger>
 
-<!--    <logger name="dev.yoon.gridgetest.domain.board" level="WARN">-->
-<!--        <appender-ref ref="APP_FILE"/>-->
-<!--        <appender-ref ref="ERROR_FILE"/>-->
-<!--    </logger>-->
+    <logger name="dev.yoon.gridgetest.domain.report" level="INFO">
+        <appender-ref ref="FILE-REPORT"/>
+    </logger>
 
-<!--    <logger name="dev.yoon.gridgetest.domain.answer" level="WARN">-->
-<!--        <appender-ref ref="APP_FILE"/>-->
-<!--        <appender-ref ref="ERROR_FILE"/>-->
-<!--    </logger>-->
+
 </configuration>

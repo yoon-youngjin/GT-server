@@ -5,7 +5,8 @@ import lombok.Getter;
 @Getter
 public enum ServiceType {
 
-    BOARD("board"), ANSWER("answer"),MESSAGE("message");
+    BOARD("board"), ANSWER("answer"), MESSAGE("message"),
+    REPORT("report"), USER("users");
 
     private String value;
 
