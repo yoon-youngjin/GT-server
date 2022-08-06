@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import java.time.LocalDateTime;
+
 import static dev.yoon.gridgetest.global.util.Constants.*;
 
 @RestController
@@ -34,7 +36,7 @@ public class UserLoginApi {
 
         String refreshToken = authorization.split(" ")[1];
 
-        LoginDto.Response response = userLoginService.autoLogin(refreshToken);
+        LoginDto.Response response = userLoginService.autoLogin(refreshToken, LocalDateTime.now());
         return ResponseEntity.ok(ApiUtils.success(response, LOGIN));
     }
 

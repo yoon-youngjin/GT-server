@@ -120,16 +120,15 @@ public class UserLoginService {
         refreshTokenRedisService.saveRefreshToken(refreshToken);
     }
 
-    //TODO 레디스 좀 더 알아보기
-
-    public LoginDto.Response autoLogin(String refreshToken) {
+    @Transactional
+    public LoginDto.Response autoLogin(String refreshToken, LocalDateTime now) {
         Claims tokenClaims = tokenManager.getTokenClaims(refreshToken);
 
         String phone = tokenClaims.getAudience();
-
         RefreshToken refreshTokenByPhone = refreshTokenRedisService.getRefreshTokenByPhone(phone);
+
         refreshTokenRedisService.validateRefreshTokenExpirationTime(
-                DateTimeUtils.convertToLocalDateTime(refreshTokenByPhone.getExpiration()), LocalDateTime.now()
+                DateTimeUtils.convertToLocalDateTime(refreshTokenByPhone.getExpiration()), now
         );
 
         User user = userService.getUserByPhoneNumber(phone);
