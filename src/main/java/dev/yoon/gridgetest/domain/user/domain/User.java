@@ -21,7 +21,7 @@ public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "USER_ID")
     private Long Id;
 
     @Enumerated(EnumType.STRING)
@@ -34,6 +34,7 @@ public class User extends BaseTimeEntity {
     @Embedded
     private Name name;
 
+    @Column(nullable = false)
     private String profileUrl;
 
     @Column(length = 20, unique = true)
@@ -45,29 +46,31 @@ public class User extends BaseTimeEntity {
     @Embedded
     private Email email;
 
-    @Column(length = 20, unique = true)
+    @Column(unique = true, length = 20, nullable = false)
     private String phoneNumber;
 
-    @Column(length = 10)
+    @Column(length = 10, nullable = false)
     private LocalDate birth;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, columnDefinition = "varchar(30) default 'ROLE_USER'")
     private Role role;
 
-    @Column(name = "is_deleted", nullable = false)
+    @Column(nullable = false, columnDefinition = "TINYINT")
     private Boolean isDeleted;
 
-    // 1년 마다 갱신
+    @Column(nullable = false, columnDefinition = "TINYINT")
     private Boolean isAcceptTerms;
 
     private String webSite;
 
     private String description;
 
+    @Column(nullable = false, columnDefinition = "TINYINT")
     private Boolean isPrivateUser;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
     private UserState userState;
 
     private LocalDateTime logInTime;
@@ -84,7 +87,7 @@ public class User extends BaseTimeEntity {
         this.phoneNumber = phoneNumber;
         this.birth = birth;
         this.socialId = socialId;
-        this.role = Role.ROLE_ADMIN;
+        this.role = Role.ROLE_USER;
         this.isDeleted = false;
         this.isAcceptTerms = true;
         this.isPrivateUser = false;
@@ -95,20 +98,6 @@ public class User extends BaseTimeEntity {
         this.logInTime = LocalDateTime.now();
 
     }
-
-
-    public static User createUser(User user) {
-        return User.builder()
-                .userType(user.getUserType())
-                .email(user.getEmail())
-                .password(user.getPassword())
-                .nickname(user.getNickname())
-                .name(user.getName())
-                .phoneNumber(user.phoneNumber)
-                .birth(user.getBirth())
-                .build();
-    }
-
 
     public void updatePassword(String password) {
         this.password.changePassword(password);

@@ -14,7 +14,7 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Password {
 
-    @Column(name = "password", length = 200)
+    @Column(name = "PASSWORD", length = 200)
     private String value;
 
     @Builder

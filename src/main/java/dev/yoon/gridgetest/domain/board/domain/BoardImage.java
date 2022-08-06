@@ -7,25 +7,26 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "board_image")
+@Table(name = "BOARD_IMAGE")
 @Getter
 @NoArgsConstructor
 public class BoardImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "BOARD_IMAGE_ID")
     private Long Id;
 
     @ManyToOne(
             fetch = FetchType.LAZY
     )
-    @JoinColumn(name = "board_id", nullable = false)
+    @JoinColumn(name = "BOARD_ID", nullable = false)
     private Board board;
 
-    @Column(name = "board_image_filename", nullable = false)
+    @Column(name = "BOARD_IMAGE_NAME", nullable = false)
     private String imageName;
 
-    @Column(name = "board_image_url", nullable = false)
+    @Column(name = "BOARD_IMAGE_URL", nullable = false)
     private String imageUrl;
 
     @Builder

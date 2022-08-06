@@ -14,25 +14,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "board")
+@Table(name = "BOARD")
 @Getter
 @NoArgsConstructor
 public class Board extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "board_id")
+    @Column(name = "BOARD_ID")
     private Long Id;
-
-    @Lob
-    @Column(length = 1000, nullable = false)
-    private String content;
 
     @ManyToOne(
             fetch = FetchType.LAZY
     )
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
+
+    @Lob
+    @Column(length = 200, nullable = false)
+    private String content;
 
     @OneToMany(
             mappedBy = "board",
@@ -56,10 +56,11 @@ public class Board extends BaseTimeEntity {
     )
     private final List<Like> likeList = new ArrayList<>();
 
+    @Column(nullable = false, columnDefinition = "TINYINT")
     private Boolean isDeleted;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "board_state")
+    @Column(nullable = false, length = 20)
     private BoardState boardState;
 
     @Builder

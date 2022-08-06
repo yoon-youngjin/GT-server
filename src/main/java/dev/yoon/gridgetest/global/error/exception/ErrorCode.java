@@ -8,8 +8,8 @@ public enum ErrorCode {
     // 인증
     ALREADY_REGISTERED_USER(400, "이미 가입된 회원 입니다."),
     MISMATCHED_PASSWORD(401, "패스워드가 일치하지 않습니다."),
-    LOGIN_ERROR(401, "비밀번호를 잘못 입력하셨습니다."),
-    QUIT_USER(401,"탈퇴한 회원입니다."),
+    LOGIN_ERROR(400, "비밀번호를 잘못 입력하셨습니다."),
+    QUIT_USER(400,"탈퇴한 회원입니다."),
     DUPLICATE_PHONE_NUMBER(400, "이미 사용 중인 전화번호입니다."),
     DUPLICATE_NICKNAME(400, "이미 사용 중인 닉네임입니다."),
     DUPLICATE_KEYWORD(400, "중복된 키워드가 포함되어 있습니다."),

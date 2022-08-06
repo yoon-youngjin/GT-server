@@ -17,13 +17,13 @@ import java.time.temporal.ChronoUnit;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Name {
 
-    @Column(name = "name", length = 20, nullable = false)
+    @Column(name = "USER_NAME", length = 20, nullable = false)
     private String value;
 
-    @Column(name = "name_update_date")
+    @Column(name = "NAME_UPDATE_DATE")
     private LocalDate updateDate;
 
-    @Column(name = "name_update_count", nullable = false)
+    @Column(name = "NAME_UPDATE_COUNT", nullable = false)
     private Integer updatedCount;
 
     @Builder

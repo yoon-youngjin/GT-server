@@ -15,13 +15,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "answer")
+@Table(name = "ANSWER")
 @Getter
 @NoArgsConstructor
 public class Answer extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ANSWER_ID")
     private Long Id;
 
     @Lob
@@ -31,17 +32,17 @@ public class Answer extends BaseTimeEntity {
     @ManyToOne(
             fetch = FetchType.LAZY
     )
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
     @ManyToOne(
             fetch = FetchType.LAZY
     )
-    @JoinColumn(name = "board_id", nullable = false)
+    @JoinColumn(name = "BOARD_ID", nullable = false)
     private Board board;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id")
+    @JoinColumn(name = "PARENT_ID")
     private Answer parent;
 
     @OneToMany(mappedBy = "parent", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)

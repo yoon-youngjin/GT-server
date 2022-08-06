@@ -7,6 +7,11 @@ import dev.yoon.gridgetest.global.ApiResult;
 import dev.yoon.gridgetest.global.resolver.UserPhone;
 import dev.yoon.gridgetest.global.util.ApiUtils;
 import dev.yoon.gridgetest.global.util.Constants;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +32,10 @@ public class UserActivityApi {
 
     private final UserActivityService userActivityService;
 
+    @Operation(summary = "유저 피드 조회")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", defaultValue ="jwt access token", dataType = "string", value = "jwt access token", required = true, paramType = "header")
+    })
     @GetMapping("/board")
     public ResponseEntity<ApiResult<Slice<GetUserBoardRes>>> getUserBoard(
             @UserPhone String phone,

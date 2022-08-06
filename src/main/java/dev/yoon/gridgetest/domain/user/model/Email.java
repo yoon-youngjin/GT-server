@@ -15,7 +15,7 @@ import javax.persistence.Embeddable;
 public class Email {
 
     @javax.validation.constraints.Email
-    @Column(name = "email", length = 100, unique = true)
+    @Column(name = "EMAIL", length = 100, unique = true)
     private String value;
 
     private Email(final String value) {

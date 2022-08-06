@@ -6,6 +6,11 @@ import dev.yoon.gridgetest.domain.message.dto.SendMessageReq;
 import dev.yoon.gridgetest.global.ApiResult;
 import dev.yoon.gridgetest.global.resolver.UserPhone;
 import dev.yoon.gridgetest.global.util.ApiUtils;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +30,10 @@ public class MessageApi {
 
     private final MessageService messageService;
 
+    @Operation(summary = "메시지 전송")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", defaultValue ="jwt access token", dataType = "string", value = "jwt access token", required = true, paramType = "header")
+    })
     @PostMapping
     public ResponseEntity<ApiResult<Void>> sendMessage(
             @RequestBody @Valid SendMessageReq request,
@@ -35,6 +44,10 @@ public class MessageApi {
 
     }
 
+    @Operation(summary = "메시지 조회")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", defaultValue ="jwt access token", dataType = "string", value = "jwt access token", required = true, paramType = "header")
+    })
     @GetMapping
     public ResponseEntity<ApiResult<Slice<GetConversationDto.Response>>> getMessagesByToUser(
             @Valid GetConversationDto.Request request,

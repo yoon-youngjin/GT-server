@@ -8,25 +8,26 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "board_like")
+@Table(name = "BOARD_LIKE")
 @Getter
 @NoArgsConstructor
 public class Like {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "BOARD_LIKE_ID")
     private Long Id;
 
     @ManyToOne(
             fetch = FetchType.LAZY
     )
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
     @ManyToOne(
             fetch = FetchType.LAZY
     )
-    @JoinColumn(name = "board_id", nullable = false)
+    @JoinColumn(name = "BOARD_ID", nullable = false)
     private Board board;
 
     @Builder

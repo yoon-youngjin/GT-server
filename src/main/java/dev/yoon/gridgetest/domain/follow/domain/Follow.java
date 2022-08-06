@@ -9,29 +9,30 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "follow")
+@Table(name = "FOLLOW")
 @Getter
 @NoArgsConstructor
 public class Follow {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "FOLLOW_ID")
     private Long Id;
 
     @ManyToOne(
             fetch = FetchType.LAZY
     )
-    @JoinColumn(name = "from_id", nullable = false)
+    @JoinColumn(name = "FROM_USER_ID", nullable = false)
     private User from;
 
     @ManyToOne(
             fetch = FetchType.LAZY
     )
-    @JoinColumn(name = "to_id", nullable = false)
+    @JoinColumn(name = "TO_USER_ID", nullable = false)
     private User to;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private FollowState followState;
 
 

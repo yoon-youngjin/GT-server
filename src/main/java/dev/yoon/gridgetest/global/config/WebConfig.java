@@ -33,7 +33,7 @@ public class WebConfig implements WebMvcConfigurer {
 
         registry.addInterceptor(authenticationInterceptor)
                 .order(1)
-                .excludePathPatterns("/api/users/login", "/api/users/oauth/login", "/api/users/auto-login",
+                .excludePathPatterns("/swagger-ui", "/api/users/login", "/api/users/oauth/login", "/api/users/auto-login",
                         "/api/users/oauth/sign-up", "/api/users/sign-up", "/api/users/sms/send",
                         "/api/users/duplicated/nickname", "/api/users/duplicated/phone",
                         "/api/users/sms/auth", "/api/health", "/api/token/reissue")

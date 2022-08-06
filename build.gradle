@@ -57,6 +57,9 @@ dependencies {
     implementation 'ch.qos.logback:logback-classic:1.2.3'
     implementation 'ch.qos.logback:logback-core:1.2.3'
 
+    // swagger
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+
 }
 
 tasks.named('test') {

@@ -9,25 +9,26 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "message")
+@Table(name = "MESSAGE")
 @Getter
 @NoArgsConstructor
 public class Message extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "MESSAGE_ID")
     private Long Id;
 
     @ManyToOne(
             fetch = FetchType.LAZY
     )
-    @JoinColumn(name = "from_id", nullable = false)
+    @JoinColumn(name = "FROM_USER_ID", nullable = false)
     private User from;
 
     @ManyToOne(
             fetch = FetchType.LAZY
     )
-    @JoinColumn(name = "to_id", nullable = false)
+    @JoinColumn(name = "FROM_TO_ID", nullable = false)
     private User to;
 
     @Column(nullable = false)
