@@ -5,6 +5,9 @@ import dev.yoon.gridgetest.domain.admin.dto.board.GetBoardDetailRes;
 import dev.yoon.gridgetest.domain.admin.dto.board.GetBoardInfoDto;
 import dev.yoon.gridgetest.global.ApiResult;
 import dev.yoon.gridgetest.global.util.ApiUtils;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,6 +28,10 @@ public class AdminBoardApi {
 
     private final AdminBoardService adminBoardService;
 
+    @Operation(summary = "관리자 - 피드 전체 조회")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", defaultValue ="jwt access token", dataType = "string", value = "jwt access token", required = true, paramType = "header")
+    })
     @GetMapping
     public ResponseEntity<ApiResult<Page<GetBoardInfoDto.Response>>> getAllBoard(
             @Valid GetBoardInfoDto.Request request,
@@ -36,6 +43,10 @@ public class AdminBoardApi {
         return ResponseEntity.ok(ApiUtils.success(response, GET_ALL_BOARD));
     }
 
+    @Operation(summary = "관리자 - 피드 상세 조회")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", defaultValue ="jwt access token", dataType = "string", value = "jwt access token", required = true, paramType = "header")
+    })
     @GetMapping("/{boardId}")
     public ResponseEntity<ApiResult<GetBoardDetailRes>> getBoardDetailInfo(
             @PathVariable("boardId") Long boardId
@@ -45,6 +56,10 @@ public class AdminBoardApi {
         return ResponseEntity.ok(ApiUtils.success(response, GET_BOARD_DETAIL_INFO));
     }
 
+    @Operation(summary = "관리자 - 피드 삭제")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", defaultValue ="jwt access token", dataType = "string", value = "jwt access token", required = true, paramType = "header")
+    })
     @DeleteMapping("/{boardId}")
     public ResponseEntity<ApiResult<Void>> deleteBoard(
             @PathVariable("boardId") Long boardId

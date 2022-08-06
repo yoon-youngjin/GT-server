@@ -4,6 +4,9 @@ import dev.yoon.gridgetest.domain.admin.application.report.AdminReportService;
 import dev.yoon.gridgetest.domain.admin.dto.report.GetReportInfoRes;
 import dev.yoon.gridgetest.global.ApiResult;
 import dev.yoon.gridgetest.global.util.ApiUtils;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +26,10 @@ public class AdminReportApi {
 
     private final AdminReportService adminReportService;
 
+    @Operation(summary = "관리자 - 신고 전체 조회")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", defaultValue ="jwt access token", dataType = "string", value = "jwt access token", required = true, paramType = "header")
+    })
     @GetMapping
     public ResponseEntity<ApiResult<Page<GetReportInfoRes>>> getAllReport(
             Optional<Integer> page
@@ -33,6 +40,10 @@ public class AdminReportApi {
         return ResponseEntity.ok(ApiUtils.success(response, GET_ALL_REPORT));
     }
 
+    @Operation(summary = "관리자 - 신고 삭제")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", defaultValue ="jwt access token", dataType = "string", value = "jwt access token", required = true, paramType = "header")
+    })
     @DeleteMapping("{reportId}")
     public ResponseEntity<ApiResult<Void>> deleteReport(
             @PathVariable("reportId") Long reportId

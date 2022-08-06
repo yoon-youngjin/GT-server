@@ -5,6 +5,9 @@ import dev.yoon.gridgetest.domain.admin.dto.log.GetLogRes;
 import dev.yoon.gridgetest.domain.report.model.ServiceType;
 import dev.yoon.gridgetest.global.ApiResult;
 import dev.yoon.gridgetest.global.util.ApiUtils;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +29,10 @@ public class AdminLogApi {
 
     private final AdminLogService adminLogService;
 
+    @Operation(summary = "관리자 - 유저 로그 조회")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", defaultValue ="jwt access token", dataType = "string", value = "jwt access token", required = true, paramType = "header")
+    })
     @GetMapping("/users")
     public ResponseEntity<ApiResult<Page<GetLogRes>>> getUserLog(
             Optional<Integer> page
@@ -37,6 +44,10 @@ public class AdminLogApi {
 
     }
 
+    @Operation(summary = "관리자 - 피드 로그 조회")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", defaultValue ="jwt access token", dataType = "string", value = "jwt access token", required = true, paramType = "header")
+    })
     @GetMapping("/board")
     public ResponseEntity<ApiResult<Page<GetLogRes>>> getBoardLog(
             Optional<Integer> page
@@ -48,6 +59,10 @@ public class AdminLogApi {
 
     }
 
+    @Operation(summary = "관리자 - 신고 로그 조회")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", defaultValue ="jwt access token", dataType = "string", value = "jwt access token", required = true, paramType = "header")
+    })
     @GetMapping("/report")
     public ResponseEntity<ApiResult<Page<GetLogRes>>> getReportLog(
             Optional<Integer> page
@@ -60,6 +75,10 @@ public class AdminLogApi {
 
     }
 
+    @Operation(summary = "관리자 - 댓글 로그 조회")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", defaultValue ="jwt access token", dataType = "string", value = "jwt access token", required = true, paramType = "header")
+    })
     @GetMapping("/answer")
     public ResponseEntity<ApiResult<Page<GetLogRes>>> getAnswerLog(
             Optional<Integer> page
